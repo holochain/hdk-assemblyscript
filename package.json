@@ -1,0 +1,8 @@
+{
+  "name": "hdk-assemblyscript",
+  "description": "",
+  "version": "1.0.0",
+  "devDependencies": {
+    "assemblyscript": "AssemblyScript/assemblyscript"
+  }
+}
