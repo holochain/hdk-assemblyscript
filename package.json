@@ -2,6 +2,7 @@
   "name": "hdk-assemblyscript",
   "description": "",
   "version": "1.0.0",
+  "main": "main.ts",
   "devDependencies": {
     "assemblyscript": "AssemblyScript/assemblyscript"
   }
