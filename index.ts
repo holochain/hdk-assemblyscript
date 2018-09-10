@@ -14,7 +14,7 @@ export {
   serialize,
   deserialize,
   free
-}
+} from './utils';
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
