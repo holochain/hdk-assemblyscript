@@ -1,0 +1,14 @@
+{
+  "name": "My Typescript App!",
+  "description": "A Holochain app",
+  "authors": [
+    {
+      "indentifier": "Author Name <author@name.com>",
+      "public_key_source": "http://eric.harris-braun.com/pk",
+      "signature": ""
+    }
+  ],
+  "version": "0.1.0",
+  "dht": {},
+  "properties": null
+}
