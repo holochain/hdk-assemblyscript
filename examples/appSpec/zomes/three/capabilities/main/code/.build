@@ -5,16 +5,8 @@
       "--noDebug",
       "index.ts",
       "-t",
-      "module.wat"
-    ],
-    "sed": [
-      "-i",
-      "/\\(start $start\\)/d",
-      "module.wat"
-    ],
-    "wat2wasm": [
       "module.wat",
-      "-o",
+      "-b",
       "module.wasm"
     ]
   },

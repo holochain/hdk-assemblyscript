@@ -8,9 +8,7 @@
   },
   "author": "",
   "license": "ISC",
-  "dependencies": {
-    "hdk-assemblyscript": "github:holochain/hdk-assemblyscript"
-  },
+  "dependencies": {},
   "devDependencies": {
     "assemblyscript": "github:AssemblyScript/assemblyscript"
   }
