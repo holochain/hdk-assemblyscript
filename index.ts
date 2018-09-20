@@ -40,3 +40,26 @@ export function debug(message: string): void {
   // local memory deals in unencoded pointers, unlike holochain
   free(ptr);
 }
+
+// these are the function that core implements and exposes at this stage
+
+// @unmanaged
+// class CommitParams {
+//   entryType: string
+//   entryContent: string
+// }
+
+export function commit_entry(entryType: string, entryContent: string): void {
+  let jsonEncodedParams: string = `{"entryType":${entryType},"entryContent":${entryContent}}`
+  let encoded_allocation: u32 = serialize(jsonEncodedParams)
+  let result: u32 = env.hc_commit_entry(encoded_allocation)
+  // probably free some memory here...
+}
+
+// export function hc_get_entry(hash: string) {
+
+// }
+
+// export function init_globals() {
+
+// }

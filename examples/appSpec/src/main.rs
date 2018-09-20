@@ -24,8 +24,12 @@ fn main() {
     hc.start().expect("couldn't start");
     // Call the exposed wasm function that calls the Commit API function
     // zome, capability, function name, input value
-    let result = hc.call("three", "main", "debugg", r#"test value"#);
+    let result = hc.call("three", "main", "test_debug", r#"test value"#);
     println!("{:?}", result);
+
+    let result = hc.call("three", "main", "test_commit", r#"{"text":"szss"}"#);
+    println!("{:?}", result);
+
     let test_logger = test_logger.lock().unwrap();
     println!("{:?}", *test_logger)
 }

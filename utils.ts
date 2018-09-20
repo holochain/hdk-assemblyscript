@@ -54,6 +54,7 @@ export function serialize(val: string): u32 {
   return encoded_allocation;
 }
 
+// reads a string given an encoded allocation
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
@@ -65,6 +66,7 @@ export function deserialize(encoded_allocation: u32): string {
   memory.free(offset);
   return res;
 }
+
 
 export function free(ptr: u32): void {
   memory.free(ptr);
