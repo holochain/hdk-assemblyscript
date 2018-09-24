@@ -57,8 +57,6 @@ export function debug(message: string): void {
   let encoded_allocation: u32 = serialize(message);
   let ptr = u32_high_bits(encoded_allocation);
   env.hc_debug(encoded_allocation);
-  // local memory deals in unencoded pointers, unlike holochain
-  // free(ptr);
 }
 
 
@@ -75,10 +73,7 @@ export function commit_entry(entryType: string, entryContent: string): string {
   let resultString: string;
   let errorCode = check_encoded_allocation(result)
 
-  // free(ptr);
-
   if(errorCode === ErrorCode.Success) {
-    // commit should be returning a hash but it is not...
     return deserialize(result)
   } else {
     return errorCodeToString(errorCode)
@@ -87,9 +82,8 @@ export function commit_entry(entryType: string, entryContent: string): string {
 }
 
 
+
 // export function get_entry(hash: string) {
-
-
 
 // }
 

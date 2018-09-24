@@ -27,7 +27,6 @@ export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
   let length: u16 = u32_low_bits(encoded_allocation);
 
   if (length == 0) {
-    // error
     return offset as ErrorCode;
   }
 
@@ -36,13 +35,11 @@ export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
   let u32length: u32 = length;
   let max: u32 = u16.MAX_VALUE;
   if ((u32offset + u32length) > max) {
-    // ErrorPageOverflow
     return ErrorCode.PageOverflowError;
   }
-
-  // 0 is success
   return ErrorCode.Success;
 }
+
 
 // writes string to memory, then returns encoded allocation ref
 export function serialize(val: string): u32 {
@@ -57,14 +54,12 @@ export function serialize(val: string): u32 {
   return encoded_allocation;
 }
 
-// reads a string given an encoded allocation
+
+// reads a string into a new memory allocation that uses the format for asm
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
-
-  // let res: string = "";
-
-  let res: string = allocateUnsafe(length); // check this is right
+  let res: string = allocateUnsafe(length);
 
   // TODO: figure out how to do this in a single copy. Need to change boundaries on characters
   for (let i: u16 = 0; i < length*2; i++) {
@@ -74,7 +69,6 @@ export function deserialize(encoded_allocation: u32): string {
       1
     );
   }
-
   return res;
 }
 
