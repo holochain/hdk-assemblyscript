@@ -27,7 +27,7 @@ fn main() {
     let result = hc.call("three", "main", "test_debug", r#"test value"#);
     println!("{:?}", result);
 
-    let result = hc.call("three", "main", "test_commit", r#"{"text":"szss"}"#);
+    let result = hc.call("three", "main", "test_commit", r#"{"entryType":"message", "entryContent": "hi"}"#);
     println!("{:?}", result);
 
     let test_logger = test_logger.lock().unwrap();
