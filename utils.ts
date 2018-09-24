@@ -62,10 +62,10 @@ export function deserialize(encoded_allocation: u32): string {
   let res: string = allocateUnsafe(length);
 
   // TODO: figure out how to do this in a single copy. Need to change boundaries on characters
-  for (let i: u16 = 0; i < length*2; i++) {
+  for (let i: u16 = 0; i < length; i++) {
     memory.copy(
-      changetype<usize>(res) + HEADER_SIZE + i,
-      changetype<usize>(offset) + i>>1,
+      changetype<usize>(res) + HEADER_SIZE + (i<<1),
+      changetype<usize>(offset) + i,
       1
     );
   }

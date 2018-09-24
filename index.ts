@@ -70,7 +70,6 @@ export function commit_entry(entryType: string, entryContent: string): string {
   let result: u32 = env.hc_commit_entry(encoded_allocation);
 
   // check if the result encodes an error
-  let resultString: string;
   let errorCode = check_encoded_allocation(result)
 
   if(errorCode === ErrorCode.Success) {
