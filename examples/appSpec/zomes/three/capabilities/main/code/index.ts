@@ -1,8 +1,8 @@
 import {
   serialize,
+  deserialize,
   debug,
   commit_entry,
-  deserialize,
 } from "../../../../../../../index"
 //TODO: Remove this relative import and link to node_modules. Good for dev only
 
@@ -28,7 +28,6 @@ export function test_commit(encoded_allocation: u32): u32 {
 
   var result: string = commit_entry("customType", "someData")
   debug(result)
-
   return 0;
 }
 
@@ -61,13 +60,13 @@ export function test_commit(encoded_allocation: u32): u32 {
 /*----------  Callbacks  ----------*/
 
 
-export function validate_commit(encoded_allocation: u32): u32 {
-  debug("Validate Commit");
-  return 0;	
-}
+// export function validate_commit(encoded_allocation: u32): u32 {
+//   debug("Validate Commit");
+//   return 0;	
+// }
 
-export function genesis(encoded_allocation: u32): u32 {
-  debug("Genesis");
-  return 0;	
-}
+// export function genesis(encoded_allocation: u32): u32 {
+//   debug("Genesis");
+//   return 0;	
+// }
 
