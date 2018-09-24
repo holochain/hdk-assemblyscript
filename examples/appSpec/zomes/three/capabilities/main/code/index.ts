@@ -32,7 +32,7 @@ export function test_commit(encoded_allocation: u32): u32 {
 
 
 export function test_get(encoded_allocation: u32): u32 {
-  const hash = "QmY2NoZ9Ep3EUuiirXiyQgYpKBMiSTGsdzh4LSVn1ceiFf"
+  let hash: string = deserialize(encoded_allocation);
   let result: string = get_entry(hash);
   return serialize(result);
 }
