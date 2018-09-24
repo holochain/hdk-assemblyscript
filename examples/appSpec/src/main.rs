@@ -65,16 +65,17 @@ mod tests {
         assert!(debug_result.is_ok());
 
         let raw_commit_result = hc.call("three", "main", "test_commit", r#"test value"#).unwrap();
+        // have to cut off trailing null char
+        let raw_commit_result = raw_commit_result.trim_right_matches(char::from(0));
         let commit_result: CommitResult = match serde_json::from_str(&raw_commit_result) {
             Ok(entry_output) => entry_output,
-            // Exit on error
             Err(e) => CommitResult {
                 hash: e.to_string()
             }
         };
-        // assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
+        assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
 
-        let get_result = hc.call("three", "main", "test_get", &"QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
+        let get_result = hc.call("three", "main", "test_get", &commit_result.hash);
         assert!(get_result.is_ok());
 
         let test_logger = test_logger.lock().unwrap();
