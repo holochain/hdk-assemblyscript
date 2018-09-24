@@ -38,7 +38,7 @@ declare namespace env {
 }
 
 
-export enum ErrorCode {
+export const enum ErrorCode {
   Success = 0,
   Failure = 1,
   ArgumentDeserializationFailed = 2,
@@ -47,7 +47,7 @@ export enum ErrorCode {
   CallbackFailed = 5,
   RecursiveCallForbidden = 6,
   ResponseSerializationFailed = 7,
-  PageOverflowError = 8, // returned by hdk if size exceeds a page
+  PageOverflowError = 8, // returned by hdk if offset+size exceeds a page
 }
 
 
@@ -58,15 +58,14 @@ export function debug(message: string): void {
   let ptr = u32_high_bits(encoded_allocation);
   env.hc_debug(encoded_allocation);
   // local memory deals in unencoded pointers, unlike holochain
-  free(ptr);
+  // free(ptr);
 }
-
 
 
 
 export function commit_entry(entryType: string, entryContent: string): string {
   let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
-  debug(jsonEncodedParams)
+
   let encoded_allocation: u32 = serialize(jsonEncodedParams);
   let ptr = u32_high_bits(encoded_allocation);
 
@@ -75,18 +74,22 @@ export function commit_entry(entryType: string, entryContent: string): string {
   // check if the result encodes an error
   let resultString: string;
   let errorCode = check_encoded_allocation(result)
-  if(errorCode === ErrorCode.Success) {
-    resultString = deserialize(result);
-  } else {
-    resultString = errorCodeToString(errorCode)
-  }
 
-  free(ptr);
-  return resultString
+  // free(ptr);
+
+  if(errorCode === ErrorCode.Success) {
+    // commit should be returning a hash but it is not...
+    return deserialize(result)
+  } else {
+    return errorCodeToString(errorCode)
+  }
 
 }
 
-// export function hc_get_entry(hash: string) {
+
+// export function get_entry(hash: string) {
+
+
 
 // }
 

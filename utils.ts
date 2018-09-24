@@ -1,5 +1,7 @@
 import "allocator/tlsf";
-import { ErrorCode } from "./index"
+import { allocateUnsafe, copyUnsafe, HEADER_SIZE } from "internal/string"
+import { ErrorCode, debug } from "./index"
+
 
 export function u32_high_bits(encoded_allocation: u32): u16 {
   // right shift and explicit type cast it
@@ -49,7 +51,7 @@ export function serialize(val: string): u32 {
   let ptr = memory.allocate(dataLength << 1);
   //checkMem();
   for (let i = 0; i < dataLength; ++i) {
-    store<u8>(ptr + i, val.charCodeAt(i));
+    store<u16>(ptr + i, val.charCodeAt(i));
   }
   let encoded_allocation = u32_merge_bits(ptr as u16, dataLength as u16);
   return encoded_allocation;
@@ -59,12 +61,20 @@ export function serialize(val: string): u32 {
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
-  let res: string = "";
-  for (let i: u16 = 0; i < length; i++) {
-    let charCode = load<u8>(offset + i);
-    res += String.fromCharCode(charCode);
+
+  // let res: string = "";
+
+  let res: string = allocateUnsafe(length); // check this is right
+
+  // TODO: figure out how to do this in a single copy. Need to change boundaries on characters
+  for (let i: u16 = 0; i < length*2; i++) {
+    memory.copy(
+      changetype<usize>(res) + HEADER_SIZE + i,
+      changetype<usize>(offset) + i>>1,
+      1
+    );
   }
-  memory.free(offset); // is this a good idea?
+
   return res;
 }
 

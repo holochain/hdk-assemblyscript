@@ -4,7 +4,7 @@ import {
   debug,
   commit_entry,
 } from "../../../../../../../index"
-//TODO: Remove this relative import and link to node_modules. Good for dev only
+//TODO: Remove this relative import and link to node_modules. Ok for dev
 
 
 
@@ -32,29 +32,6 @@ export function test_commit(encoded_allocation: u32): u32 {
 }
 
 
-/*----------  prototyping  ----------*/
-
-
-// example of a hard-coded class that can be parsed and stringified from json
-// work to make this more generic within the constraints of assemblyscript (no interfaces, no Object.keys() etc)
-// class CommitParams {
-//   entryType: string
-//   entryContent: string
-
-//   constructor(jsonString: string) {
-//     const fields = ['entryType', 'entryContent']
-
-//     for(var i=0; i<fields.length; i++) {
-
-//     }
-
-//   }
-
-//   stringify(): string {
-//     return `{"entryType":"`+this.entryType+`","entryContent":"`+this.entryContent+`"}`
-//   }
-
-// }
 
 
 /*----------  Callbacks  ----------*/
