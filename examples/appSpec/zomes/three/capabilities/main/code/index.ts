@@ -3,6 +3,7 @@ import {
   deserialize,
   debug,
   commit_entry,
+  get_entry,
 } from "../../../../../../../index"
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
@@ -28,10 +29,20 @@ export function test_commit(encoded_allocation: u32): u32 {
 
   var result: string = commit_entry("customType", "someData")
   debug(result)
+
   return 0;
 }
 
 
+export function test_get(encoded_allocation: u32): u32 {
+  const tree = "test";
+
+  const hash = "QmY2NoZ9Ep3EUuiirXiyQgYpKBMiSTGsdzh4LSVn1ceiFf"
+  var result: string = get_entry(hash);
+  debug(result)
+
+  return 0;
+}
 
 
 /*----------  Callbacks  ----------*/

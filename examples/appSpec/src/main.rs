@@ -30,6 +30,9 @@ fn main() {
     let result = hc.call("three", "main", "test_commit", r#"{"entryType":"message", "entryContent": "hi"}"#);
     println!("{:?}", result);
 
+    let result = hc.call("three", "main", "test_get", "");
+    println!("{:?}", result);
+
     let test_logger = test_logger.lock().unwrap();
     println!("{:?}", *test_logger)
 }

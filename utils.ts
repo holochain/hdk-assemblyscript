@@ -9,6 +9,7 @@ export function u32_high_bits(encoded_allocation: u32): u16 {
   return high;
 }
 
+
 export function u32_low_bits(encoded_allocation: u32): u16 {
   // type cast and remainder
   let low: u16 = encoded_allocation as u16 % u16.MAX_VALUE;
@@ -21,15 +22,13 @@ export function u32_merge_bits(high: u16, low: u16): u32 {
   return high as u32 << 16 | (low as u32);
 }
 
+
 export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
-  
   let offset: u16 = u32_high_bits(encoded_allocation);
   let length: u16 = u32_low_bits(encoded_allocation);
-
   if (length == 0) {
     return offset as ErrorCode;
   }
-
   // switch to u32 from u16
   let u32offset: u32 = offset;
   let u32length: u32 = length;
@@ -76,6 +75,7 @@ export function deserialize(encoded_allocation: u32): string {
 export function free(ptr: u32): void {
   memory.free(ptr);
 }
+
 
 export function errorCodeToString(code: ErrorCode): string {
   switch(code) {
