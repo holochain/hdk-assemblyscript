@@ -5,6 +5,8 @@ import {
   u32_low_bits,
   serialize,
   deserialize,
+  check_encoded_allocation,
+  errorCodeToString,
   free
 } from './utils';
 
@@ -13,6 +15,8 @@ export {
   u32_low_bits,
   serialize,
   deserialize,
+  check_encoded_allocation,
+  errorCodeToString,
   free
 } from './utils';
 
@@ -33,6 +37,22 @@ declare namespace env {
   function hc_close_bundle(encoded_allocation_of_input: u32): u32;
 }
 
+
+export enum ErrorCode {
+  Success = 0,
+  Failure = 1,
+  ArgumentDeserializationFailed = 2,
+  OutOfMemory = 3,
+  ReceivedWrongActionResult = 4,
+  CallbackFailed = 5,
+  RecursiveCallForbidden = 6,
+  ResponseSerializationFailed = 7,
+  PageOverflowError = 8, // returned by hdk if size exceeds a page
+}
+
+
+
+
 export function debug(message: string): void {
   let encoded_allocation: u32 = serialize(message);
   let ptr = u32_high_bits(encoded_allocation);
@@ -41,19 +61,29 @@ export function debug(message: string): void {
   free(ptr);
 }
 
-// these are the function that core implements and exposes at this stage
 
-// @unmanaged
-// class CommitParams {
-//   entryType: string
-//   entryContent: string
-// }
 
-export function commit_entry(entryType: string, entryContent: string): void {
-  let jsonEncodedParams: string = `{"entryType":${entryType},"entryContent":${entryContent}}`
-  let encoded_allocation: u32 = serialize(jsonEncodedParams)
-  let result: u32 = env.hc_commit_entry(encoded_allocation)
-  // probably free some memory here...
+
+export function commit_entry(entryType: string, entryContent: string): string {
+  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
+  debug(jsonEncodedParams)
+  let encoded_allocation: u32 = serialize(jsonEncodedParams);
+  let ptr = u32_high_bits(encoded_allocation);
+
+  let result: u32 = env.hc_commit_entry(encoded_allocation);
+
+  // check if the result encodes an error
+  let resultString: string;
+  let errorCode = check_encoded_allocation(result)
+  if(errorCode === ErrorCode.Success) {
+    resultString = deserialize(result);
+  } else {
+    resultString = errorCodeToString(errorCode)
+  }
+
+  free(ptr);
+  return resultString
+
 }
 
 // export function hc_get_entry(hash: string) {

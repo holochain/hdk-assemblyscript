@@ -1,4 +1,5 @@
 import "allocator/tlsf";
+import { ErrorCode } from "./index"
 
 export function u32_high_bits(encoded_allocation: u32): u16 {
   // right shift and explicit type cast it
@@ -18,14 +19,14 @@ export function u32_merge_bits(high: u16, low: u16): u32 {
   return high as u32 << 16 | (low as u32);
 }
 
-export function check_encoded_allocation(encoded_allocation: u32): u32 {
+export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
   
-  let offset = u32_high_bits(encoded_allocation);
-  let length = u32_low_bits(encoded_allocation);
+  let offset: u16 = u32_high_bits(encoded_allocation);
+  let length: u16 = u32_low_bits(encoded_allocation);
 
   if (length == 0) {
     // error
-    return 1 << 16;
+    return offset as ErrorCode;
   }
 
   // switch to u32 from u16
@@ -34,11 +35,11 @@ export function check_encoded_allocation(encoded_allocation: u32): u32 {
   let max: u32 = u16.MAX_VALUE;
   if ((u32offset + u32length) > max) {
     // ErrorPageOverflow
-    return 3 << 16;
+    return ErrorCode.PageOverflowError;
   }
 
   // 0 is success
-  return 0;
+  return ErrorCode.Success;
 }
 
 // writes string to memory, then returns encoded allocation ref
@@ -63,11 +64,36 @@ export function deserialize(encoded_allocation: u32): string {
     let charCode = load<u8>(offset + i);
     res += String.fromCharCode(charCode);
   }
-  memory.free(offset);
+  memory.free(offset); // is this a good idea?
   return res;
 }
 
 
 export function free(ptr: u32): void {
   memory.free(ptr);
+}
+
+export function errorCodeToString(code: ErrorCode): string {
+  switch(code) {
+    case ErrorCode.Success:
+      return "Success";
+    case ErrorCode.Failure:
+      return "Failure";
+    case ErrorCode.ArgumentDeserializationFailed:
+      return "Argument Deserialization Failed";
+    case ErrorCode.OutOfMemory:
+      return "OutOfMemory";
+    case ErrorCode.ReceivedWrongActionResult:
+      return "Received Wrong Action Result";
+    case ErrorCode.CallbackFailed:
+      return "Callback Failed";
+    case ErrorCode.RecursiveCallForbidden:
+      return "Recursive Call Forbidden";
+    case ErrorCode.ResponseSerializationFailed:
+      return "Response Serialization Failed";
+    case ErrorCode.PageOverflowError:
+      return "Page Overflow Error";
+    default:
+      return "Unknown Error";
+  }
 }
