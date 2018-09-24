@@ -1,0 +1,12 @@
+{
+  "steps": {
+    "./node_modules/assemblyscript/bin/asc": [
+      "index.ts",
+      "-t",
+      "module.wat",
+      "-b",
+      "module.wasm"
+    ]
+  },
+  "artifact": "module.wasm"
+}

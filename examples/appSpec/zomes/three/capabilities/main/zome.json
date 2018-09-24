@@ -1,0 +1,17 @@
+{
+  "description": "The three App",
+  "capability": {
+    "membrane": "agent"
+  },
+  "functions": [
+    {
+        "name": "debugg",
+        "inputs": [
+          {"name": "content", "type": "string"}
+        ],
+        "outputs": [
+          {"name": "success", "type": "boolean"}
+        ]
+    }
+  ]
+}

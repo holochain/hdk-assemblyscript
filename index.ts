@@ -5,6 +5,8 @@ import {
   u32_low_bits,
   serialize,
   deserialize,
+  check_encoded_allocation,
+  errorCodeToString,
   free
 } from './utils';
 
@@ -13,6 +15,8 @@ export {
   u32_low_bits,
   serialize,
   deserialize,
+  check_encoded_allocation,
+  errorCodeToString,
   free
 } from './utils';
 
@@ -33,10 +37,61 @@ declare namespace env {
   function hc_close_bundle(encoded_allocation_of_input: u32): u32;
 }
 
+
+export const enum ErrorCode {
+  Success = 0,
+  Failure = 1,
+  ArgumentDeserializationFailed = 2,
+  OutOfMemory = 3,
+  ReceivedWrongActionResult = 4,
+  CallbackFailed = 5,
+  RecursiveCallForbidden = 6,
+  ResponseSerializationFailed = 7,
+  PageOverflowError = 8, // returned by hdk if offset+size exceeds a page
+}
+
+
+
+
 export function debug(message: string): void {
   let encoded_allocation: u32 = serialize(message);
-  let ptr = u32_high_bits(encoded_allocation);
+  // let ptr = u32_high_bits(encoded_allocation);
   env.hc_debug(encoded_allocation);
-  // local memory deals in unencoded pointers, unlike holochain
-  free(ptr);
 }
+
+
+
+export function commit_entry(entryType: string, entryContent: string): string {
+  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
+
+  let encoded_allocation: u32 = serialize(jsonEncodedParams);
+  let result: u32 = env.hc_commit_entry(encoded_allocation);
+  let errorCode = check_encoded_allocation(result)
+
+  if(errorCode === ErrorCode.Success) {
+    return deserialize(result)
+  } else {
+    return errorCodeToString(errorCode)
+  }
+
+}
+
+
+
+export function get_entry(hash: string): string {
+  let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
+
+  let encoded_allocation: u32 = serialize(jsonEncodedParams);
+  let result: u32 = env.hc_get_entry(encoded_allocation);
+  let errorCode = check_encoded_allocation(result)
+
+  if(errorCode === ErrorCode.Success) {
+    return deserialize(result)
+  } else {
+    return errorCodeToString(errorCode)
+  }
+}
+
+// export function init_globals() {
+
+// }
