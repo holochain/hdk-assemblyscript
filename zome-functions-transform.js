@@ -1,5 +1,35 @@
+const fs = require('fs')
+const path = require('path')
+var assemblyscript
+(() => {
+  try {
+    assemblyscript = require('assemblyscript')
+  } catch (e) {
+    require('ts-node').register({ project: path.join(__dirname, 'node_modules', 'assemblyscript', 'src', 'tsconfig-base.json') })
+    require('./node_modules/assemblyscript/src/glue/js')
+    assemblyscript = require('./node_modules/assemblyscript/src')
+  }
+})()
+const {
+  CommonFlags,
+  Node,
+  NodeKind,
+  SourceKind,
+  TypeKind,
+  parseFile
+} = assemblyscript
+
 exports.afterParse = function(parser) {
 
+  const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
+  const entrySrc = parser.program.sources[entrySrcIdx]
+  
+  entrySrc.statements.forEach(stmt => {
+    //console.log(Object.keys(stmt))
+    //console.log(stmt.kind === NodeKind.FUNCTIONDECLARATION)
+    // stmt.decorators && stmt.decorators.length && stmt.decorators[0].name.text === "zome_function"
+    
+  })
 /*
 export function test_commit(val: string): string {
   return commit_entry("message", val);
