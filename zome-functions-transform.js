@@ -26,9 +26,29 @@ exports.afterParse = function(parser) {
   
   entrySrc.statements.forEach(stmt => {
     //console.log(Object.keys(stmt))
-    //console.log(stmt.kind === NodeKind.FUNCTIONDECLARATION)
-    // stmt.decorators && stmt.decorators.length && stmt.decorators[0].name.text === "zome_function"
-    
+    if (
+      stmt.kind === NodeKind.FUNCTIONDECLARATION &&
+      stmt.decorators &&
+      stmt.decorators.length &&
+      stmt.decorators[0].name.text === "zome_function"
+    ) {
+      console.log("params " + stmt.signature.parameters)
+      console.log("returnType " + stmt.signature.returnType)
+
+      // create a new node for the input param
+
+      console.log(stmt.body)
+
+      // to modify
+      /*
+      Create a string, then run "parseFile" on the string to get an AST of its own
+      const callWrapperStatement = parseFile(
+            `storageLoadWrapper()`, entrySrc.range.source.normalizedPath, true, null).program.sources[0].statements[0]
+      Then assign any results into the old AST, like
+      callWrapperStatement.expression.arguments.push(keyExpr)
+      */
+    }
+
   })
 /*
 export function test_commit(val: string): string {
