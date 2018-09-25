@@ -12,7 +12,6 @@ import {
 
 /*----------  Public Functions  ----------*/
 
-
 export function test_debug(encoded_allocation: u32): u32 {
   // necessary for setting memory module to at least one page
   // find another way

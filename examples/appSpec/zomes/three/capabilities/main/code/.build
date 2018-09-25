@@ -5,7 +5,9 @@
       "-t",
       "module.wat",
       "-b",
-      "module.wasm"
+      "module.wasm",
+      "--transform",
+      "../../../../../../../zome-functions-transform"
     ]
   },
   "artifact": "module.wasm"
