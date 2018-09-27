@@ -1,15 +1,7 @@
 const fs = require('fs')
 const path = require('path')
-var assemblyscript
-(() => {
-  try {
-    assemblyscript = require('assemblyscript')
-  } catch (e) {
-    require('ts-node').register({ project: path.join(__dirname, 'node_modules', 'assemblyscript', 'src', 'tsconfig-base.json') })
-    require('./node_modules/assemblyscript/src/glue/js')
-    assemblyscript = require('./node_modules/assemblyscript/src')
-  }
-})()
+const assemblyscript = require('assemblyscript')
+
 const {
   CommonFlags,
   Node,
@@ -19,25 +11,46 @@ const {
   parseFile
 } = assemblyscript
 
+
 exports.afterParse = function(parser) {
 
   const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
   const entrySrc = parser.program.sources[entrySrcIdx]
   
   entrySrc.statements.forEach(stmt => {
-    //console.log(Object.keys(stmt))
     if (
       stmt.kind === NodeKind.FUNCTIONDECLARATION &&
       stmt.decorators &&
       stmt.decorators.length &&
-      stmt.decorators[0].name.text === "zome_function"
+      stmt.decorators.some(d => d.name.text === "zome_function")
     ) {
-      console.log("params " + stmt.signature.parameters)
-      console.log("returnType " + stmt.signature.returnType)
+
+
+
+
+      console.log("================params=============")
+
+      // use this to create a handler that will populate the 
+      // local scope with the deserialized parameter values
+
+      stmt.signature.parameters.forEach((param) => {
+        console.log(param.name.text + " : " + param.type.name.text)
+        // console.log()
+      })
+
+      console.log("===========returnType=========")
+
+      // use the return type to create a stringifier for the return type
+      // support only string returns for now
+
+      console.log(stmt.signature.returnType.name.text)
+
+      console.log("===========body=========")
+
 
       // create a new node for the input param
 
-      console.log(stmt.body)
+      console.log(stmt.body.statements[0].expression)
 
       // to modify
       /*
