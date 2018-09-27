@@ -49,14 +49,14 @@ Assemblyscript supports transforming the typescript source as part of the build 
 
 The proposed tranform is as follows:
 Developer writes:
-```typescript=
+```typescript
 @zome_function
 function writePost(title: string, body: string, timestamp: i32): string {
     ... commit entries etc
 }
 ```
 compiler sees:
-```typescript=
+```typescript
 
 function _writePost(title: string, body: string, timestamp: i32): string {
     ... commit entries etc
