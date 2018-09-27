@@ -11,6 +11,11 @@ import {
 } from './utils';
 
 export {
+  parseString,
+  Handler
+} from './node_modules/asm-json-parser/lib/index'
+
+export {
   u32_high_bits,
   u32_low_bits,
   serialize,

@@ -4,14 +4,11 @@ import {
   debug,
   commit_entry,
   get_entry,
-  check_encoded_allocation
-} from "../../../../../../../index";
-
-
-import {
+  check_encoded_allocation,
   parseString,
   Handler
-} from "../../../../../../../asmjson";
+} from "../../../../../../../index";
+
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
 
@@ -48,13 +45,6 @@ export function test_get(encoded_allocation: u32): u32 {
 var valueString: string = "";
 
 class ParameterHandler extends Handler {
-  currentKey: string
-
-  onKey(value: string): boolean {
-    this.currentKey = value;
-    return true;
-  }
-
   onString(value: string): boolean {
     if(this.currentKey == "keyString") {
         valueString = value;

@@ -5,5 +5,8 @@
   "main": "index.ts",
   "devDependencies": {
     "assemblyscript": "AssemblyScript/assemblyscript"
+  },
+  "dependencies": {
+    "asm-json-parser": "^0.1.0"
   }
 }
