@@ -41,15 +41,16 @@ export function test_get(encoded_allocation: u32): u32 {
 }
 
 
-// attempt to parse the json string into the variables
+/*----------  test_decode_params boilerplate  ----------*/
+
+
 var valueString: string = "";
 
 class ParameterHandler extends Handler {
-  onString(value: string): boolean {
+  onString(value: string): void {
     if(this.currentKey == "keyString") {
         valueString = value;
     }
-    return true;
   }
 }
 
@@ -63,6 +64,38 @@ export function test_decode_params(encoded_allocation: u32): u32 {
 
 }
 
+/*----------  test_decode_multiple_params boilerplate  ----------*/
+
+var string1: string = "+";
+var string2: string = "-";
+var keys: string = ""
+
+class MultiParameterHandler extends Handler {
+  currentKey: string;
+
+  onKey(value: string): void {
+    this.currentKey = value;
+    keys += value;
+  }
+
+  onString(value: string): void {
+    if(this.currentKey == "firstString") {
+      string1 = value;
+    } else if (this.currentKey == "secondString") {
+      string2 = value;
+    }
+  }
+}
+
+export function test_decode_multiple_params(encoded_allocation: u32): u32 {
+  let jsonString: string = deserialize(encoded_allocation);   
+
+  let handler = new MultiParameterHandler()
+  parseString<MultiParameterHandler>(jsonString, handler)
+
+  return serialize(string1+string2);
+
+}
 
 /*----------  Callbacks  ----------*/
 

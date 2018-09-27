@@ -88,6 +88,12 @@ mod tests {
 
         assert_eq!(test_decode_result, "valueString");
 
+        // test_decode_multiple_params
+        let test_decode_multiple_params_result = hc.call("three", "main", "test_decode_multiple_params",r#"{"firstString" : "abc", "secondString" : "def"}"#).unwrap();
+        let test_decode_multiple_params_result = test_decode_multiple_params_result.trim_right_matches(char::from(0));
+
+        assert_eq!(test_decode_multiple_params_result, "abcdef");
+
         let test_logger = test_logger.lock().unwrap();
         println!("{:?}", *test_logger)
     }
