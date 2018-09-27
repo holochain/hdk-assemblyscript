@@ -5,7 +5,13 @@ import {
   commit_entry,
   get_entry,
   check_encoded_allocation
-} from "../../../../../../../index"
+} from "../../../../../../../index";
+
+
+import {
+  parseString,
+  Handler
+} from "../../../../../../../asmjson";
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
 
@@ -35,6 +41,36 @@ export function test_get(encoded_allocation: u32): u32 {
   let hash: string = deserialize(encoded_allocation);
   let result: string = get_entry(hash);
   return serialize(result);
+}
+
+
+// attempt to parse the json string into the variables
+var valueString: string = "";
+
+class ParameterHandler extends Handler {
+  currentKey: string
+
+  onKey(value: string): boolean {
+    this.currentKey = value;
+    return true;
+  }
+
+  onString(value: string): boolean {
+    if(this.currentKey == "keyString") {
+        valueString = value;
+    }
+    return true;
+  }
+}
+
+export function test_decode_params(encoded_allocation: u32): u32 {
+   let jsonString: string = deserialize(encoded_allocation);   
+
+    let handler = new ParameterHandler()
+    parseString<ParameterHandler>(jsonString, handler)
+
+   return serialize(valueString);
+
 }
 
 

@@ -59,11 +59,14 @@ mod tests {
 
         // Run the holochain instance
         hc.start().expect("couldn't start");
-        // Call the exposed wasm function that calls the Commit API function
-        // zome, capability, function name, input value
+
+
+        // test debug
         let debug_result = hc.call("three", "main", "test_debug", r#"test value"#);
         assert!(debug_result.is_ok());
 
+
+        // test calling commit
         let raw_commit_result = hc.call("three", "main", "test_commit", r#"test value"#).unwrap();
         // have to cut off trailing null char
         let raw_commit_result = raw_commit_result.trim_right_matches(char::from(0));
@@ -75,8 +78,15 @@ mod tests {
         };
         assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
 
+        // test get
         let get_result = hc.call("three", "main", "test_get", &commit_result.hash);
         assert!(get_result.is_ok());
+
+        // test test_decode_params
+        let test_decode_result = hc.call("three", "main", "test_decode_params",r#"{"keyString": "valueString"}"#).unwrap();
+        let test_decode_result = test_decode_result.trim_right_matches(char::from(0));
+
+        assert_eq!(test_decode_result, "valueString");
 
         let test_logger = test_logger.lock().unwrap();
         println!("{:?}", *test_logger)
