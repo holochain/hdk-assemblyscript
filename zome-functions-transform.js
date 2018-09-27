@@ -26,31 +26,29 @@ exports.afterParse = function(parser) {
     ) {
 
 
+      // unpack what we need from this function
+
+      const func = {
+        name: stmt.signature.parent.name.text,
+        params: stmt.signature.parameters.map((param) => {
+          return {name: param.name.text, type: param.type.name.text}
+        }),
+        returnType: stmt.signature.returnType.name.text
+      }
+
+      console.log(func)
 
 
-      console.log("================params=============")
+      // rename the old function to be prefixed with an underscore
 
-      // use this to create a handler that will populate the 
-      // local scope with the deserialized parameter values
+      // create a new function with the same name that does the unwrapping and 
+      // calls the old function
+      
+      // add the new function to the AST as an exported function
 
-      stmt.signature.parameters.forEach((param) => {
-        console.log(param.name.text + " : " + param.type.name.text)
-        // console.log()
-      })
-
-      console.log("===========returnType=========")
-
-      // use the return type to create a stringifier for the return type
-      // support only string returns for now
-
-      console.log(stmt.signature.returnType.name.text)
-
-      console.log("===========body=========")
+      // (optionally) add some data to the manifest.json
 
 
-      // create a new node for the input param
-
-      console.log(stmt.body.statements[0].expression)
 
       // to modify
       /*

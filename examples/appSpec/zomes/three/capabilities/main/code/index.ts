@@ -17,6 +17,7 @@ export function test_debug(val: string): void {
   debug(val);
 }
 
+@zome_function
 export function test_commit(encoded_allocation: u32): u32 {
   let val: string = deserialize(encoded_allocation);
   // TODO: how do we parse JSON input here, to get custom values?
