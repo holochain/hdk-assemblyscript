@@ -66,18 +66,10 @@ export function test_decode_params(encoded_allocation: u32): u32 {
 
 /*----------  test_decode_multiple_params boilerplate  ----------*/
 
-var string1: string = "+";
-var string2: string = "-";
-var keys: string = ""
+var string1: string = "";
+var string2: string = "";
 
 class MultiParameterHandler extends Handler {
-  currentKey: string;
-
-  onKey(value: string): void {
-    this.currentKey = value;
-    keys += value;
-  }
-
   onString(value: string): void {
     if(this.currentKey == "firstString") {
       string1 = value;
