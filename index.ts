@@ -10,6 +10,20 @@ import {
   free
 } from './utils';
 
+import {
+  CommitResult,
+  CommitResultParser
+} from './types'
+
+export {
+  CommitResult,
+  CommitResultParser
+} from './types'
+
+import {
+  parseString
+} from './node_modules/asm-json-parser/lib/index'
+
 export {
   parseString,
   Handler
@@ -66,7 +80,7 @@ export function debug(message: string): void {
 
 
 
-export function commit_entry(entryType: string, entryContent: string): string {
+export function commit_entry(entryType: string, entryContent: string): CommitResult {
   let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
 
   let encoded_allocation: u32 = serialize(jsonEncodedParams);
@@ -74,9 +88,13 @@ export function commit_entry(entryType: string, entryContent: string): string {
   let errorCode = check_encoded_allocation(result)
 
   if(errorCode === ErrorCode.Success) {
-    return deserialize(result)
+    let jsonString = deserialize(result);
+    let resultObject = new CommitResult();
+    let parser = new CommitResultParser(resultObject);
+    parseString<CommitResultParser>(jsonString, parser)
+    return resultObject
   } else {
-    return errorCodeToString(errorCode)
+    return new CommitResult();
   }
 
 }

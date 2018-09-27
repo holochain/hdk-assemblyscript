@@ -6,7 +6,8 @@ import {
   get_entry,
   check_encoded_allocation,
   parseString,
-  Handler
+  Handler,
+  CommitResult
 } from "../../../../../../../index";
 
 //TODO: Remove this relative import and link to node_modules. Ok for dev
@@ -29,8 +30,8 @@ export function test_commit(encoded_allocation: u32): u32 {
   let val: string = deserialize(encoded_allocation);
   // TODO: how do we parse JSON input here, to get custom values?
   // at least pass through the "entry_data" part
-  let result: string = commit_entry("message", val);
-  return serialize(result);
+  let result: CommitResult = commit_entry("message", val);
+  return serialize(result.hash);
 }
 
 

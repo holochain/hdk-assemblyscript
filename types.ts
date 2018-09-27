@@ -1,7 +1,7 @@
 import { Handler } from './index'
 
 export class CommitResult {
-	hash: string
+	hash: string = ""
 }
 
 
@@ -9,12 +9,11 @@ export class CommitResultParser extends Handler {
 	commitResult: CommitResult
 
 	constructor(commitResult: CommitResult) {
-		super()
 		this.commitResult = commitResult;
 	}
 
 	onString(value: string): void {
-		if(value == "hash") {
+		if(this.currentKey == "hash") {
 			this.commitResult.hash = value;
 		}
 	}

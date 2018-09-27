@@ -1,4 +1,3 @@
-#[macro_use]
 extern crate serde_derive;
 
 extern crate holochain_core;
@@ -18,11 +17,6 @@ mod tests {
     use holochain_dna::zome::Zome;
     use holochain_core_api::*;
     use test_utils::*;
-
-    #[derive(Deserialize, Debug)]
-    struct CommitResult {
-        hash: String
-    }
 
     #[test]
     fn testing() {
@@ -67,19 +61,11 @@ mod tests {
 
 
         // test calling commit
-        let raw_commit_result = hc.call("three", "main", "test_commit", r#"test value"#).unwrap();
-        // have to cut off trailing null char
-        let raw_commit_result = raw_commit_result.trim_right_matches(char::from(0));
-        let commit_result: CommitResult = match serde_json::from_str(&raw_commit_result) {
-            Ok(entry_output) => entry_output,
-            Err(e) => CommitResult {
-                hash: e.to_string()
-            }
-        };
-        assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
+        let hash = hc.call("three", "main", "test_commit", r#"test value"#).unwrap();
+        assert_eq!(hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ");
 
         // test get
-        let get_result = hc.call("three", "main", "test_get", &commit_result.hash);
+        let get_result = hc.call("three", "main", "test_get", &hash);
         assert!(get_result.is_ok());
 
         // test test_decode_params
