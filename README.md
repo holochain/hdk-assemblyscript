@@ -62,36 +62,40 @@ function _writePost(title: string, body: string, timestamp: i32): string {
     ... commit entries etc
 }
 
+
+
+// define params in the global scope
+var writePost_title: string;
+var writePost_body: string;
+var writePost_timestamp: i32;
+
+// define a handler for these parameters
+class writePost_ParameterHandler extends Handler {
+  onInt(value: i32, stringValue: string) {
+    if(currentKey == "timestamp") {
+        writePost_timestamp = value;
+    }
+  }
+  onString(value: string) {
+    if(currentKey == "title") {
+        writePost_title = value;
+    } else if (currentKey == "body") {
+        writePost_body = value;
+    }
+  }
+}
+
 export function writePost(e: u32): u32 {
     let jsonString: string = deserialize(e);
     // `{"title": "wasm for beginners", "body": "...", "timestamp": 1234}``
+
     
-    // parameters defined as variables
-    let title: string;
-    let body: string;
-    let timestamp: i32;
-    
-    // attempt to parse the json string into the variables
-    class ParameterHandler extends Handler {
-      onInt(value: i32, stringValue: string) {
-        if(currentKey == "timestamp") {
-            timestamp = value;
-        }
-      }
-      onString(value: string) {
-        if(currentKey == "title") {
-            title = value;
-        } else if (currentKey == "body") {
-            body = value;
-        }
-      }
-    }
-    
+    // attempt to parse string to variables    
     let handler = new ParameterHandler()
     parseString<ParameterHandler>(jsonString, handler)
     
     // call the original function
-    let result: string = _writePost(title, body, timestamp);
+    let result: string = _writePost(writePost_title, writePost_body, writePost_timestamp);
     
     // return the serialized result string
     return serialize(result);
@@ -103,6 +107,7 @@ The above still has some limitations such as:
 
 - only string values allowed for public zome function returns
 - only primitive types and strings permitted as function parameters
+- having to use the global scope as closures are not yet implemented and classes cannot be defined in a function body
 
 This may or may not be acceptable going forward
 
