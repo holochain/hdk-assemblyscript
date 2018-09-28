@@ -65,8 +65,9 @@ mod tests {
         assert_eq!(hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ");
 
         // test get
-        let get_result = hc.call("three", "main", "test_get", &hash);
-        assert!(get_result.is_ok());
+        let get_result = hc.call("three", "main", "test_get", &hash).unwrap();
+        println!("{}", &get_result);
+        // assert!(get_result.is_ok());
 
         // test test_decode_params
         let test_decode_result = hc.call("three", "main", "test_decode_params",r#"{"keyString": "valueString"}"#).unwrap();
