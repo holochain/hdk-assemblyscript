@@ -15,6 +15,7 @@ exports.makeFunctionString = function(funcDef) {
 	var functionArgs = funcDef.parameters.reduce((acc, param) => acc + `${funcDef.name}_Params.${param.name}, `, "");
 	functionArgs = functionArgs.substring(0, functionArgs.length-2); // remove comma and space for last arg
 
+	// sort the params in to buckets based on their correct callbacks
 	const callbacks = {
 		onString: [],
 		onInt: [],
@@ -22,7 +23,6 @@ exports.makeFunctionString = function(funcDef) {
 		onBool: [],
 	}
 
-	// sort the params to their correct callbacks
 	funcDef.parameters.forEach((param) => {
 		switch(param.type) {
 			case 'string':
@@ -40,14 +40,14 @@ exports.makeFunctionString = function(funcDef) {
 		}
 	});
 
-
+	// write out the code for the custom Handler class
 	let callbacksString = "";
 	Object.keys(callbacks).forEach((key) => {
 		const params = callbacks[key];
 		if(params.length > 0) {
 			callbacksString += `
-			${key}(value: ${params[0].type}): void {
-				switch(currentKey){
+			${key}(keyStack: Array<string>, value: ${params[0].type}): void {
+				switch(keyStack[keyStack.length-1]){
 			`
 
 			params.forEach(param => {

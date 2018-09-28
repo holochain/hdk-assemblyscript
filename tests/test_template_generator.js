@@ -1,6 +1,17 @@
 const test = require('tape');
 const {makeFunctionString} = require('../function-template-generator');
-// import { makeFunctionString } from '../function-template-generator';
+const assemblyscript = require('assemblyscript');
+
+const {
+  CommonFlags,
+  Node,
+  NodeKind,
+  SourceKind,
+  TypeKind,
+  Parser,
+  parseFile
+} = assemblyscript;
+
 
 test('Can generate a template for function with no parameters', function (t) {
 	const funcDef = {
@@ -10,7 +21,6 @@ test('Can generate a template for function with no parameters', function (t) {
 	}
 	const fString = makeFunctionString(funcDef);
 	t.comment(fString)
-
 	t.end();
 });
 
