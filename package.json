@@ -7,6 +7,6 @@
     "assemblyscript": "AssemblyScript/assemblyscript"
   },
   "dependencies": {
-    "asm-json-parser": "^0.1.0"
+    "asm-json-parser": "^0.2.0"
   }
 }
