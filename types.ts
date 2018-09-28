@@ -1,20 +1,23 @@
-import { Handler } from './index'
 
 export class CommitResult {
 	hash: string = ""
 }
 
+export class Header {
+	entryType: string = ""
+	timestamp: string = ""
+	link: string = ""
+	entryHash: string = ""
+	entrySignature: string = ""
+	linkSameType: boolean = false
+}
 
-export class CommitResultParser extends Handler {
-	commitResult: CommitResult
+export class Entry {
+	content: string = ""
+	entryType: string = ""
+}
 
-	constructor(commitResult: CommitResult) {
-		this.commitResult = commitResult;
-	}
-
-	onString(keyStack: Array<string>, value: string): void {
-		if(keyStack[keyStack.length-1] == "hash") {
-			this.commitResult.hash = value;
-		}
-	}
+export class GetResult {
+	header: Header = new Header();
+	entry: Entry = new Entry();
 }

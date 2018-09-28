@@ -12,13 +12,18 @@ import {
 
 import {
   CommitResult,
-  CommitResultParser
+  GetResult
 } from './types'
 
 export {
   CommitResult,
-  CommitResultParser
+  GetResult
 } from './types'
+
+import {
+  CommitResultParser,
+  GetResultParser
+} from './parsers'
 
 import {
   parseString
@@ -101,7 +106,7 @@ export function commit_entry(entryType: string, entryContent: string): CommitRes
 
 
 
-export function get_entry(hash: string): string {
+export function get_entry(hash: string): GetResult {
   let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
 
   let encoded_allocation: u32 = serialize(jsonEncodedParams);
@@ -109,9 +114,13 @@ export function get_entry(hash: string): string {
   let errorCode = check_encoded_allocation(result)
 
   if(errorCode === ErrorCode.Success) {
-    return deserialize(result)
+    let jsonString = deserialize(result);
+    let resultObject = new GetResult();
+    let parser = new GetResultParser(resultObject);
+    parseString<GetResultParser>(jsonString, parser)
+    return resultObject
   } else {
-    return errorCodeToString(errorCode)
+    return new GetResult()
   }
 }
 
