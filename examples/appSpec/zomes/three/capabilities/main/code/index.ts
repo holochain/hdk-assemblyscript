@@ -48,8 +48,8 @@ export function test_get(encoded_allocation: u32): u32 {
 var valueString: string = "";
 
 class ParameterHandler extends Handler {
-  onString(value: string): void {
-    if(this.currentKey == "keyString") {
+  onString(keyStack: Array<string>, value: string): void {
+    if(keyStack[keyStack.length-1] == "keyString") {
         valueString = value;
     }
   }
@@ -71,10 +71,10 @@ var string1: string = "";
 var string2: string = "";
 
 class MultiParameterHandler extends Handler {
-  onString(value: string): void {
-    if(this.currentKey == "firstString") {
+  onString(keyStack: Array<string>,value: string): void {
+    if(keyStack[keyStack.length-1] == "firstString") {
       string1 = value;
-    } else if (this.currentKey == "secondString") {
+    } else if (keyStack[keyStack.length-1] == "secondString") {
       string2 = value;
     }
   }

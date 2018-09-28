@@ -12,8 +12,8 @@ export class CommitResultParser extends Handler {
 		this.commitResult = commitResult;
 	}
 
-	onString(value: string): void {
-		if(this.currentKey == "hash") {
+	onString(keyStack: Array<string>, value: string): void {
+		if(keyStack[keyStack.length-1] == "hash") {
 			this.commitResult.hash = value;
 		}
 	}
