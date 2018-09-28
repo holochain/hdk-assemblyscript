@@ -11,8 +11,8 @@
 exports.makeFunctionString = function(funcDef) {
 	const paramsAsProperties = funcDef.parameters.reduce((acc, param) => acc + `${param.name}: ${param.type};
 	`, "")
-	const functionArgs = funcDef.parameters.reduce((acc, param) => acc + `${funcDef.name}_Params.${param.name}`, "");
-
+	var functionArgs = funcDef.parameters.reduce((acc, param) => acc + `${funcDef.name}_Params.${param.name}, `, "");
+	functionArgs = functionArgs.substring(0, functionArgs.length-2); // remove comma and space for last arg
 
 	const codeString = `
 	class ${funcDef.name}_Params {

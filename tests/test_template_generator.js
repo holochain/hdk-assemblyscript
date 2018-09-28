@@ -26,3 +26,16 @@ test('Can generate a template for function with a single parameters', function (
 
 	t.end();
 });
+
+
+test('Can generate a template for function with multiple parameters', function (t) {
+	const funcDef = {
+		name: 'testFunc',
+		parameters: [{name: 'p1', type: 'string'}, {name: 'p2', type: 'i32'}],
+		returnType: 'string'
+	}
+	const fString = makeFunctionString(funcDef);
+	t.comment(fString)
+
+	t.end();
+});
