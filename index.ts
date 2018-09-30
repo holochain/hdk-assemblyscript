@@ -37,7 +37,6 @@ declare namespace env {
   function hc_close_bundle(encoded_allocation_of_input: u32): u32;
 }
 
-
 export const enum ErrorCode {
   Success = 0,
   Failure = 1,
@@ -50,46 +49,30 @@ export const enum ErrorCode {
   PageOverflowError = 8, // returned by hdk if offset+size exceeds a page
 }
 
+function handleSerialization(input: string, api_call: string): string {
+  let encoded_allocation: u32 = serialize(input);
+  let result: u32 = env[api_call](encoded_allocation);
+  let resultCode = check_encoded_allocation(result)
 
-
-
-export function debug(message: string): void {
-  let encoded_allocation: u32 = serialize(message);
-  // let ptr = u32_high_bits(encoded_allocation);
-  env.hc_debug(encoded_allocation);
+  if(resultCode === ErrorCode.Success) {
+    return deserialize(result)
+  } else {
+    return errorCodeToString(resultCode)
+  }
 }
 
-
+export function debug(message: string): void {
+  return handleSerialization(message, "hc_debug");
+}
 
 export function commit_entry(entryType: string, entryContent: string): string {
   let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
-
-  let encoded_allocation: u32 = serialize(jsonEncodedParams);
-  let result: u32 = env.hc_commit_entry(encoded_allocation);
-  let errorCode = check_encoded_allocation(result)
-
-  if(errorCode === ErrorCode.Success) {
-    return deserialize(result)
-  } else {
-    return errorCodeToString(errorCode)
-  }
-
+  return handleSerialization(jsonEncodedParams, "hc_commit_entry");
 }
-
-
 
 export function get_entry(hash: string): string {
   let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
-
-  let encoded_allocation: u32 = serialize(jsonEncodedParams);
-  let result: u32 = env.hc_get_entry(encoded_allocation);
-  let errorCode = check_encoded_allocation(result)
-
-  if(errorCode === ErrorCode.Success) {
-    return deserialize(result)
-  } else {
-    return errorCodeToString(errorCode)
-  }
+  return handleSerialization(jsonEncodedParams, "hc_get_entry");
 }
 
 // export function init_globals() {
