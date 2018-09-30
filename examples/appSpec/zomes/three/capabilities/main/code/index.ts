@@ -13,23 +13,18 @@ import {
 /*----------  Public Functions  ----------*/
 
 @zome_function
-export function test_debug(val: string): void {
+function test_debug(val: string): void {
   debug(val);
 }
 
-export function test_commit(encoded_allocation: u32): u32 {
-  let val: string = deserialize(encoded_allocation);
-  // TODO: how do we parse JSON input here, to get custom values?
-  // at least pass through the "entry_data" part
-  let result: string = commit_entry("message", val);
-  return serialize(result);
+@zome_function
+export function test_commit(jsonStringParams: string): string {
+  return commit_entry("message", jsonStringParams);
 }
 
-
-export function test_get(encoded_allocation: u32): u32 {
-  let hash: string = deserialize(encoded_allocation);
-  let result: string = get_entry(hash);
-  return serialize(result);
+@zome_function
+export function test_get(hash: string): string {
+  return get_entry(hash);
 }
 
 
