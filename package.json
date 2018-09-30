@@ -3,6 +3,9 @@
   "description": "",
   "version": "1.0.0",
   "main": "index.ts",
+  "scripts": {
+    "test": "node tests/test_template_generator.js"
+  },
   "dependencies": {
     "assemblyscript": "lrettig/assemblyscript#ewasm"
   },
