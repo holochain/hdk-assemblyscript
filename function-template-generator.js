@@ -53,7 +53,7 @@ function makePostamble(funcDef) {
 		case 'void':
 			return `return 0;`;
 		case 'string':
-			return 	`return deserialize(result)`;
+			return 	`return serialize(result)`;
 		default:
 			throw Error("Return type not yet supported.");
 	}
