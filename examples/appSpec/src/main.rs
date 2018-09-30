@@ -24,8 +24,7 @@ mod tests {
         hash: String
     }
 
-    #[test]
-    fn testing() {
+    fn setup_hc() -> Holochain {
         // Setup the holochain instance
         let mut dna_file = File::open("app.hcpkg").expect("file not found");
         let mut dna_string = String::new();
@@ -54,17 +53,30 @@ mod tests {
             })
             .collect::<HashMap<String, Zome>>();
 
-        let (context, test_logger) = test_context_and_logger("alex");
+        let (context, _test_logger) = test_context_and_logger("alex");
         let mut hc = Holochain::new(dna, context).unwrap();
 
         // Run the holochain instance
         hc.start().expect("couldn't start");
-        // Call the exposed wasm function that calls the Commit API function
-        // zome, capability, function name, input value
-        let debug_result = hc.call("three", "main", "test_debug", r#"test value"#);
-        assert!(debug_result.is_ok());
+        return hc;
+    }
 
-        let raw_commit_result = hc.call("three", "main", "test_commit", r#"test value"#).unwrap();
+
+    #[test]
+    fn test_debug() {
+        let mut hc = setup_hc();
+        let debug_result = hc.call("three", "main", "test_debug", r#"holochain debug!"#);
+        assert!(debug_result.is_ok());
+    }
+
+
+    #[test]
+    fn test_commit() {
+        let mut hc = setup_hc();
+        let commit_result = hc.call("three", "main", "test_commit", r#"test value"#);
+        assert!(commit_result.is_ok());
+        let raw_commit_result = commit_result.unwrap();
+
         // have to cut off trailing null char
         let raw_commit_result = raw_commit_result.trim_right_matches(char::from(0));
         let commit_result: CommitResult = match serde_json::from_str(&raw_commit_result) {
@@ -74,11 +86,13 @@ mod tests {
             }
         };
         assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
+    }
 
-        let get_result = hc.call("three", "main", "test_get", &commit_result.hash);
+
+    #[test]
+    fn test_get() {
+        let mut hc = setup_hc();
+        let get_result = hc.call("three", "main", "test_get", "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ");
         assert!(get_result.is_ok());
-
-        let test_logger = test_logger.lock().unwrap();
-        println!("{:?}", *test_logger)
     }
 }
