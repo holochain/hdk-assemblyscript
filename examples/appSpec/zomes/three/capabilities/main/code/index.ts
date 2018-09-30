@@ -18,12 +18,12 @@ function test_debug(val: string): void {
 }
 
 @zome_function
-export function test_commit(jsonStringParams: string): string {
+function test_commit(jsonStringParams: string): string {
   return commit_entry("message", jsonStringParams);
 }
 
 @zome_function
-export function test_get(hash: string): string {
+function test_get(hash: string): string {
   return get_entry(hash);
 }
 
