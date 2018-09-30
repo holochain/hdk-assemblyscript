@@ -1,7 +1,6 @@
-const fs = require('fs')
-const path = require('path')
-const assemblyscript = require('assemblyscript')
-
+const fs = require('fs');
+const path = require('path');
+const assemblyscript = require('assemblyscript');
 const {
   CommonFlags,
   Node,
@@ -9,7 +8,12 @@ const {
   SourceKind,
   TypeKind,
   parseFile
-} = assemblyscript
+} = assemblyscript;
+
+const templateGen = require('./function-template-generator')
+const {
+  makeFunctionString
+} = templateGen;
 
 
 exports.afterParse = function(parser) {
@@ -25,7 +29,6 @@ exports.afterParse = function(parser) {
       stmt.decorators.some(d => d.name.text === "zome_function")
     ) {
 
-
       // unpack what we need from this function
 
       const func = {
@@ -40,11 +43,19 @@ exports.afterParse = function(parser) {
 
 
       // rename the old function to be prefixed with an underscore
+      stmt.signature.parent.name.text = "_"+func.name;
 
       // create a new function with the same name that does the unwrapping and 
       // calls the old function
-      
+      const callWrapperStmt = parseFile(
+        makeFunctionString(func),
+        entrySrc.range.source.normalizedPath, 
+        true,
+        null
+      ).program.sources[0].statements[0];
+    
       // add the new function to the AST as an exported function
+      entrySrc.statements.push(callWrapperStmt);
 
       // (optionally) add some data to the manifest.json
 
