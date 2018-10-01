@@ -49,9 +49,9 @@ export const enum ErrorCode {
   PageOverflowError = 8, // returned by hdk if offset+size exceeds a page
 }
 
-function handleSerialization(input: string, api_call: string): string {
+function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   let encoded_allocation: u32 = serialize(input);
-  let result: u32 = env[api_call](encoded_allocation);
+  let result: u32 = api_call(encoded_allocation);
   let resultCode = check_encoded_allocation(result)
 
   if(resultCode === ErrorCode.Success) {
@@ -62,17 +62,17 @@ function handleSerialization(input: string, api_call: string): string {
 }
 
 export function debug(message: string): void {
-  return handleSerialization(message, "hc_debug");
+  handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
 }
 
 export function commit_entry(entryType: string, entryContent: string): string {
   let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
-  return handleSerialization(jsonEncodedParams, "hc_commit_entry");
+  return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
 export function get_entry(hash: string): string {
   let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
-  return handleSerialization(jsonEncodedParams, "hc_get_entry");
+  return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
 
 // export function init_globals() {
