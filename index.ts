@@ -52,6 +52,14 @@ export const enum ErrorCode {
   PageOverflowError = 8, // returned by hdk if offset+size exceeds a page
 }
 
+// handleSerialization
+// creates a consistent pattern we can use for serializing the input into memory,
+// calling the core API function (api_call) which is passed in,
+// and then returning an error or the deserialized result
+// @param input: string, the string value that api_call will pull from memory and use as an input
+// @param api_call: function, the core API call, which should be wrapped in a small inline function because assemblyscript
+// @returns string, the successful result of the call, or an error string
+
 function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   let encoded_allocation: u32 = serialize(input);
   let result: u32 = api_call(encoded_allocation);

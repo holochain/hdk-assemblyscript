@@ -10,11 +10,17 @@ To enable developers to write zomes in assemblyscript in a familiar way the HDK 
 The medium of communication between holochain core and wasm zomes is strings which may optionally use json to encode objects. More speficically all wasm calls must accept a single u32 (encoded_allocation) where the high 16 bits are the memory offset and the low 32 bits are the size of the string. Similarly this is what a wasm call must return. 
 
 ## Status
+
+### Working Functions
 - [x] debug
 - [x] commit_entry
 - [x] get_entry
 - [x] init_globals
+
+### Functions Ready To Implement (in holochain-rust)
 - [ ] call
+
+### Functions Not Ready
 - [ ] sign
 - [ ] verify_signature
 - [ ] update_entry
@@ -25,6 +31,25 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [ ] send
 - [ ] start_bundle
 - [ ] close_bundle
+
+## Using the API Functions
+
+To use a function, just import it...
+```typescript
+import {
+  debug
+} from 'hdk-assemblyscript'
+```
+
+Then, in some zome function that you are writing, you can just call that function...
+```typescript
+@zome_function
+function createPost(...) {
+  ...
+  debug("hello");
+  ...
+}
+```
 
 ## Limitations of assemblyscript
 It is important to note that assemblyscript is NOT typescript. There are several important features that are missing notably:
