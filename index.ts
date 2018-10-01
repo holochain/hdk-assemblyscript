@@ -63,7 +63,7 @@ export const enum ErrorCode {
 function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   let encoded_allocation: u32 = serialize(input);
   let result: u32 = api_call(encoded_allocation);
-  let resultCode = check_encoded_allocation(result)
+  let resultCode = check_encoded_allocation(result);
 
   if(resultCode === ErrorCode.Success) {
     return deserialize(result)
