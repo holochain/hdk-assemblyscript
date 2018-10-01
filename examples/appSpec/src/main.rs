@@ -95,4 +95,17 @@ mod tests {
         let get_result = hc.call("three", "main", "test_get", "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ");
         assert!(get_result.is_ok());
     }
+
+    #[test]
+    fn test_init_globals() {
+        let mut hc = setup_hc();
+        let globals_result = hc.call("three", "main", "test_init_globals", "");
+        assert!(globals_result.is_ok());
+
+        let globals_result_string = globals_result.unwrap();
+        assert_eq!(
+            globals_result_string.trim_right_matches(char::from(0)),
+            r#"{"app_name":"My Typescript App!","app_dna_hash":"FIXME-app_dna_hash","app_agent_id_str":"alex","app_agent_key_hash":"FIXME-app_agent_key_hash","app_agent_initial_hash":"FIXME-app_agent_initial_hash","app_agent_latest_hash":"FIXME-app_agent_latest_hash"}"#
+        );
+    }
 }

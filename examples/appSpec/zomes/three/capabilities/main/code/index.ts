@@ -4,6 +4,7 @@ import {
   debug,
   commit_entry,
   get_entry,
+  init_globals,
   check_encoded_allocation
 } from "../../../../../../../index"
 //TODO: Remove this relative import and link to node_modules. Ok for dev
@@ -27,6 +28,10 @@ function test_get(hash: string): string {
   return get_entry(hash);
 }
 
+@zome_function
+function test_init_globals(): string {
+	return init_globals();
+}
 
 /*----------  Callbacks  ----------*/
 
