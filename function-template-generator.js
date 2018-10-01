@@ -12,7 +12,7 @@ exports.makeFunctionString = function(funcDef) {
 
 	const codeString = `
 	export function ${funcDef.name}(e: u32): u32 {
-		${makePremble(funcDef)}
+		${makePreamble(funcDef)}
 		${makeCall(funcDef)}
 		${makePostamble(funcDef)}
 	}
@@ -22,7 +22,7 @@ exports.makeFunctionString = function(funcDef) {
 
 
 // the code that runs before the function
-function makePremble(funcDef) {
+function makePreamble(funcDef) {
 	if(funcDef.params.length === 0) {
 		return ``;
 	} else if (funcDef.params.length === 1) {
