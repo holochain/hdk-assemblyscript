@@ -1,5 +1,7 @@
 import "allocator/tlsf";
 
+import {Globals} from "./types"
+
 import {
   u32_high_bits,
   u32_low_bits,
@@ -35,6 +37,7 @@ declare namespace env {
   function hc_send(encoded_allocation_of_input: u32): u32;
   function hc_start_bundle(encoded_allocation_of_input: u32): u32;
   function hc_close_bundle(encoded_allocation_of_input: u32): u32;
+  function hc_init_globals(encoded_allocation_of_input: u32): u32;
 }
 
 export const enum ErrorCode {
@@ -83,6 +86,6 @@ export function get_entry(hash: string): string {
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
 
-// export function init_globals() {
-
-// }
+export function init_globals(): string {
+  return handleSerialization("", (e: u32): u32 => env.hc_init_globals(e));
+}

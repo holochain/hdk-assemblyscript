@@ -38,11 +38,17 @@ function makePremble(funcDef) {
 
 
 function makeCall(funcDef) {
+	let paramString = "";
+
+	if(funcDef.params.length !== 0) {
+		paramString = "paramString";
+	}
+
 	if(funcDef.returnType === 'void') {
-		return `_${funcDef.name}(paramString);`
+		return `_${funcDef.name}(${paramString});`
 	} else {
 		return `
-		let result: ${funcDef.returnType} = _${funcDef.name}(paramString);
+		let result: ${funcDef.returnType} = _${funcDef.name}(${paramString});
 		`
 	}
 }

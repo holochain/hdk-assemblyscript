@@ -15,9 +15,9 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [x] debug
 - [x] commit_entry
 - [x] get_entry
+- [x] init_globals
 
 ### Functions Ready To Implement (in holochain-rust)
-- [ ] init_globals
 - [ ] call
 
 ### Functions Not Ready
