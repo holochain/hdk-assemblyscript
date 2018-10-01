@@ -13,7 +13,7 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [x] debug
 - [x] commit_entry
 - [x] get_entry
-- [ ] init_globals
+- [x] init_globals
 - [ ] call
 - [ ] sign
 - [ ] verify_signature
