@@ -5,13 +5,24 @@
   },
   "functions": [
     {
-        "name": "debugg",
-        "inputs": [
-          {"name": "content", "type": "string"}
-        ],
-        "outputs": [
-          {"name": "success", "type": "boolean"}
-        ]
+      "name": "test_debug",
+      "inputs": [{ "name": "val", "type": "string" }],
+      "outputs": []
+    },
+    {
+      "name": "test_commit_entry",
+      "inputs": [{ "name": "jsonStringParams", "type": "string" }],
+      "outputs": []
+    },
+    {
+      "name": "test_get_entry",
+      "inputs": [{ "name": "hash", "type": "string" }],
+      "outputs": []
+    },
+    {
+      "name": "test_init_globals",
+      "inputs": [],
+      "outputs": []
     }
   ]
 }
