@@ -107,7 +107,7 @@ dependencies = [
  "serde 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde-hjson 0.8.1 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.31 (registry+https://github.com/rust-lang/crates.io-index)",
- "toml 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)",
+ "toml 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)",
  "yaml-rust 0.4.2 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
@@ -265,12 +265,12 @@ dependencies = [
 [[package]]
 name = "holochain_agent"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 
 [[package]]
 name = "holochain_core"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 dependencies = [
  "bitflags 1.0.4 (registry+https://github.com/rust-lang/crates.io-index)",
  "chrono 0.4.6 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -301,7 +301,7 @@ dependencies = [
 [[package]]
 name = "holochain_core_api"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 dependencies = [
  "holochain_agent 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)",
  "holochain_core 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)",
@@ -311,7 +311,7 @@ dependencies = [
 [[package]]
 name = "holochain_dna"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 dependencies = [
  "base64 0.9.3 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -323,7 +323,7 @@ dependencies = [
 [[package]]
 name = "holochain_wasm_utils"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 dependencies = [
  "serde 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -873,15 +873,6 @@ dependencies = [
 ]
 
 [[package]]
-name = "tempdir"
-version = "0.3.7"
-source = "registry+https://github.com/rust-lang/crates.io-index"
-dependencies = [
- "rand 0.4.3 (registry+https://github.com/rust-lang/crates.io-index)",
- "remove_dir_all 0.5.1 (registry+https://github.com/rust-lang/crates.io-index)",
-]
-
-[[package]]
 name = "tempfile"
 version = "3.0.4"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -897,12 +888,12 @@ dependencies = [
 [[package]]
 name = "test_utils"
 version = "0.1.0"
-source = "git+https://github.com/holochain/holochain-rust?branch=develop#000edb0397b5c0692a9545bd69cd9fc9445dbd83"
+source = "git+https://github.com/holochain/holochain-rust?branch=develop#433fc635da7d8153a820b197ac0a8c1ddbb7ab93"
 dependencies = [
  "holochain_agent 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)",
  "holochain_core 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)",
  "holochain_dna 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)",
- "wabt 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wabt 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
@@ -950,7 +941,7 @@ dependencies = [
 
 [[package]]
 name = "toml"
-version = "0.4.7"
+version = "0.4.8"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "serde 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1002,19 +993,18 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 
 [[package]]
 name = "wabt"
-version = "0.2.2"
+version = "0.4.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "serde 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_derive 1.0.79 (registry+https://github.com/rust-lang/crates.io-index)",
  "serde_json 1.0.31 (registry+https://github.com/rust-lang/crates.io-index)",
- "tempdir 0.3.7 (registry+https://github.com/rust-lang/crates.io-index)",
- "wabt-sys 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)",
+ "wabt-sys 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)",
 ]
 
 [[package]]
 name = "wabt-sys"
-version = "0.1.4"
+version = "0.2.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
 dependencies = [
  "cc 1.0.25 (registry+https://github.com/rust-lang/crates.io-index)",
@@ -1204,7 +1194,6 @@ dependencies = [
 "checksum snowflake 1.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "27207bb65232eda1f588cf46db2fee75c0808d557f6b3cf19a75f5d6d7c94df1"
 "checksum syn 0.14.9 (registry+https://github.com/rust-lang/crates.io-index)" = "261ae9ecaa397c42b960649561949d69311f08eeaea86a65696e6e46517cf741"
 "checksum syn 0.15.7 (registry+https://github.com/rust-lang/crates.io-index)" = "455a6ec9b368f8c479b0ae5494d13b22dc00990d2f00d68c9dc6a2dc4f17f210"
-"checksum tempdir 0.3.7 (registry+https://github.com/rust-lang/crates.io-index)" = "15f2b5fb00ccdf689e0149d1b1b3c03fead81c2b37735d812fa8bddbbf41b6d8"
 "checksum tempfile 3.0.4 (registry+https://github.com/rust-lang/crates.io-index)" = "55c1195ef8513f3273d55ff59fe5da6940287a0d7a98331254397f464833675b"
 "checksum test_utils 0.1.0 (git+https://github.com/holochain/holochain-rust?branch=develop)" = "<none>"
 "checksum thread-id 2.0.0 (registry+https://github.com/rust-lang/crates.io-index)" = "a9539db560102d1cef46b8b78ce737ff0bb64e7e18d35b2a5688f7d097d0ff03"
@@ -1212,7 +1201,7 @@ dependencies = [
 "checksum thread_local 0.3.6 (registry+https://github.com/rust-lang/crates.io-index)" = "c6b53e329000edc2b34dbe8545fd20e55a333362d0a321909685a19bd28c3f1b"
 "checksum time 0.1.40 (registry+https://github.com/rust-lang/crates.io-index)" = "d825be0eb33fda1a7e68012d51e9c7f451dc1a69391e7fdc197060bb8c56667b"
 "checksum tiny-keccak 1.4.2 (registry+https://github.com/rust-lang/crates.io-index)" = "e9175261fbdb60781fcd388a4d6cc7e14764a2b629a7ad94abb439aed223a44f"
-"checksum toml 0.4.7 (registry+https://github.com/rust-lang/crates.io-index)" = "b7e7d59d55f36979a9dd86d71ae54657a5e9c7fdb4fa2212f4064e2d32f9dcda"
+"checksum toml 0.4.8 (registry+https://github.com/rust-lang/crates.io-index)" = "4a2ecc31b0351ea18b3fe11274b8db6e4d82bce861bbb22e6dbed40417902c65"
 "checksum typenum 1.10.0 (registry+https://github.com/rust-lang/crates.io-index)" = "612d636f949607bdf9b123b4a6f6d966dedf3ff669f7f045890d3a4a73948169"
 "checksum ucd-util 0.1.1 (registry+https://github.com/rust-lang/crates.io-index)" = "fd2be2d6639d0f8fe6cdda291ad456e23629558d466e2789d2c3e9892bda285d"
 "checksum unicode-xid 0.1.0 (registry+https://github.com/rust-lang/crates.io-index)" = "fc72304796d0818e357ead4e000d19c9c174ab23dc11093ac919054d20a6a7fc"
@@ -1221,8 +1210,8 @@ dependencies = [
 "checksum utf8-ranges 1.0.1 (registry+https://github.com/rust-lang/crates.io-index)" = "fd70f467df6810094968e2fce0ee1bd0e87157aceb026a8c083bcf5e25b9efe4"
 "checksum uuid 0.6.5 (registry+https://github.com/rust-lang/crates.io-index)" = "e1436e58182935dcd9ce0add9ea0b558e8a87befe01c1a301e6020aeb0876363"
 "checksum version_check 0.1.5 (registry+https://github.com/rust-lang/crates.io-index)" = "914b1a6776c4c929a602fafd8bc742e06365d4bcbe48c30f9cca5824f70dc9dd"
-"checksum wabt 0.2.2 (registry+https://github.com/rust-lang/crates.io-index)" = "91e119a3c08ad149ff30ff59d725dd175a17732e0d4d4229efb2b5eb33c9df3d"
-"checksum wabt-sys 0.1.4 (registry+https://github.com/rust-lang/crates.io-index)" = "fc67b1d96cd7839be6996edf94be66351d83f614e9cc7c6edc33accd9f5e6529"
+"checksum wabt 0.4.0 (registry+https://github.com/rust-lang/crates.io-index)" = "182ae543249ccf2705f324d233891c1176fca142e137b55ba43d9dbfe93f18a2"
+"checksum wabt-sys 0.2.0 (registry+https://github.com/rust-lang/crates.io-index)" = "8ca77c6b934a2b32618941b2f565aac43b8cb7141378c3b4fba4d8fcdcd57da3"
 "checksum walkdir 2.2.5 (registry+https://github.com/rust-lang/crates.io-index)" = "af464bc7be7b785c7ac72e266a6b67c4c9070155606f51655a650a6686204e35"
 "checksum wasmi 0.3.0 (registry+https://github.com/rust-lang/crates.io-index)" = "9b4a6d379e9332b1b1f52c5a87f2481c85c7c931d8ec411963dfb8f26b1ec1e3"
 "checksum winapi 0.2.8 (registry+https://github.com/rust-lang/crates.io-index)" = "167dc9d6949a9b857f3451275e911c3f44255842c1f7a76f33c55103a909087a"
