@@ -4,7 +4,8 @@
   "version": "1.0.0",
   "main": "index.ts",
   "scripts": {
-    "test": "node tests/test_template_generator.js"
+    "test": "node tests/test_template_generator.js",
+    "dev-jsmn": "asc jsmn-interop --transform transforms/decorator-deserializable"
   },
   "dependencies": {
     "assemblyscript": "lrettig/assemblyscript#ewasm"

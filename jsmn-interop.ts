@@ -48,17 +48,18 @@ class JsmnParser {
 //   }
 // `
 
-const json: string = `{"a": 0, "b": "x", "c": [1, 2, 3]}`
 
 function tok(type: JsmnType, start: u32, end: u32): JsmnToken {
-  const t = new JsmnToken()
+  let t = new JsmnToken()
   t.type = type
   t.start = start
   t.end = end
   return t
 }
 
-const toks: Array<JsmnToken> = [
+const json: string = `{"a": 0, "b": "x", "c": [1, 2, 3]}`
+
+let toks: Array<JsmnToken> = [
   tok(JsmnType.OBJECT, 0, 34),
   tok(JsmnType.STRING, 2, 3),
   tok(JsmnType.PRIMITIVE, 6, 7),
@@ -71,8 +72,19 @@ const toks: Array<JsmnToken> = [
   tok(JsmnType.PRIMITIVE, 31, 32),
 ]
 
+@deserializable
+class A {
+  a: i32;
+  b: B;
+}
+
+@deserializable
+class B {
+  x: Array<string>;
+}
+
 export function unmarshal(
   toks: Array<JsmnToken>
-) {
+): void {
 
 }
