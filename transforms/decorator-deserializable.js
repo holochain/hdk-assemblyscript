@@ -68,11 +68,10 @@ exports.afterParse = function(parser) {
   })
 
   const funcFile = fs.readFileSync(
-    path.join(__dirname, 'unmarshal-helpers.js'),
+    path.join(__dirname, 'unmarshal-helpers.ts'),
     'utf8'
   )
   const code = structCode(deserializableClasses) + '\n' + funcFile
-  console.log(code)
   const stmts = parseStatements(entrySrc, code)
 
   // add the new function to the AST as an exported function

@@ -1,4 +1,13 @@
 
+@external("env", "logf")
+declare function logf(val: f64): void;
+
+@external("env", "logi")
+declare function logi(val: i64): void;
+
+@external("env", "log")
+declare function log<T>(val: T): void;
+
 export function unmarshal_impl(
   json: string,
   toks: Array<JsmnToken>,
@@ -6,6 +15,7 @@ export function unmarshal_impl(
   typeName: string,
   typeArgs: Array<string>
 ): string {
+  log<string>(index)
   const tok = toks[index]
   let ty = makeTypeString(typeName, typeArgs)
   const slice = json.substr(tok.start, tok.end)
