@@ -124,24 +124,24 @@ function buildMarshal(ty, struct) {
         case 'i32':
         case 'u32':
           return [
-            `parseI32(val, 10)`,
+            `parseI32(val, 10); toks.shift()`,
             'JsmnType.PRIMITIVE'
           ]
         case 'i64':
         case 'u64':
           return [
-            `parseI64(val, 10)`,
+            `parseI64(val, 10); toks.shift()`,
             'JsmnType.PRIMITIVE'
           ]
         case 'f32':
         case 'f64':
           return [
-            'parseFloat(val)',
+            'parseFloat(val); toks.shift()',
             'JsmnType.PRIMITIVE'
           ]
         case 'string':
           return [
-            'val',
+            'val; toks.shift()',
             'JsmnType.STRING'
           ]
         case 'Array':
@@ -171,13 +171,14 @@ function buildMarshal(ty, struct) {
 
 function marshal_${ty}(json: string, toks: Array<JsmnToken>): ${ty} {
   let obj = new ${ty}()
+  logi(toks.length)
   let objTok = toks.shift()
   assert(objTok.type === JsmnType.OBJECT)
   // TODO: check for empty object
 
   do {
     let keyTok: JsmnToken = toks.shift()
-    let valTok: JsmnToken = toks.shift()
+    let valTok: JsmnToken = toks[0]  // maybe shift later
     const key = tokenVal(json, keyTok)
     const val = tokenVal(json, valTok)
     // *** begin generated conditionals ***

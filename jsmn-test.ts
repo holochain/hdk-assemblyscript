@@ -49,16 +49,45 @@ let toks2: Array<JsmnToken> = [
         tok(JsmnType.PRIMITIVE, 31, 32),
 ]
 
+function offset(toks: Array<JsmnToken>, off: i32): Array<JsmnToken> {
+  let i = 0
+  while(i < toks.length) {
+    toks[i].start += off
+    toks[i].end += off
+    i++
+  }
+  return toks
+}
+
+function join(a: Array<JsmnToken>, b: Array<JsmnToken>): Array<JsmnToken> {
+  for (let i = 0; i < b.length; i++) {
+    a.push(b[i])
+  }
+  return a
+}
+
 const json_S: string = `{"a": 12345}`
 let toks_S: Array<JsmnToken> = [
   tok(JsmnType.OBJECT, 0, 12),
-  tok(JsmnType.STRING, 2, 3),
-  tok(JsmnType.PRIMITIVE, 6, 11),
+    tok(JsmnType.STRING, 2, 3),
+    tok(JsmnType.PRIMITIVE, 6, 11),
 ]
+
+const json_T: string = `{"s": {"a": 98765}}`
+let toks_T: Array<JsmnToken> = join(
+  [
+    tok(JsmnType.OBJECT, 0, 12),
+      tok(JsmnType.STRING, 2, 3),
+  ], offset(toks_S, 6))
 
 @deserializable
 class S {
   a: i32;
+}
+
+@deserializable
+class T {
+  s: S;
 }
 
 // @deserializable
@@ -74,8 +103,9 @@ class B {
 
 
 let s = marshal_S(json_S, toks_S)
+let t = marshal_T(json_T, toks_T)
 export function result(): i32 {
-  return s.a
+  return t.s.a
 }
 
 // log<i32>(a.b.c[0])
