@@ -58,5 +58,6 @@ export function unmarshal<T>(
   json: string,
   toks: Array<JsmnToken>
 ): T {
+  // will be rewritten in transform
   return changetype<T>(0)
 }

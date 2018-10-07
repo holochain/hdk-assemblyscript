@@ -36,7 +36,7 @@ exports.afterParse = function(parser) {
           const name = m.name.text
           const type = m.type.name.text
           const typeArgs = m.type.typeArguments.map(t => t.name.text)
-          fields.push([m.name.text, type, typeArgs])
+          fields.push([m.name.text, type, ...typeArgs])
         }
       })
 
@@ -57,7 +57,7 @@ exports.afterParse = function(parser) {
             ${args[1]},
             0,
             '${typeName}',
-            ["${typeArgs.join('","')}"],
+            ${typeArgs ? "[" + typeArgs.join('","') + "]" : "[]"},
           )
         `
         const statement = parseStatements(entrySrc, code)[0]
@@ -71,11 +71,9 @@ exports.afterParse = function(parser) {
     path.join(__dirname, 'unmarshal-helpers.js'),
     'utf8'
   )
-  funcFile += `
-
-  var __deserializableClasses = ${JSON.stringify(deserializableClasses)}
-  `
-  const stmts = parseStatements(entrySrc, funcFile)
+  const code = structCode(deserializableClasses) + '\n' + funcFile
+  console.log(code)
+  const stmts = parseStatements(entrySrc, code)
 
   // add the new function to the AST as an exported function
   entrySrc.statements.push(...stmts);
@@ -93,6 +91,24 @@ exports.afterParse = function(parser) {
 
   // // add the new function to the AST as an exported function
   // entrySrc.statements.push(funcStatement);
+}
+
+function structCode(structs) {
+  const decl = `
+    let structs: Map<string, AoA > = new Map();
+  `
+  const defs = ''
+  Object.keys(structs).forEach(key => {
+    const struct = structs[key]
+    defs += `
+    structs.set('${key}', <AoA>${JSON.stringify(struct)});
+    `
+  })
+  return `
+    type AoA = Array< Array<string> >;
+    function __deserializableClasses(): Map<string, AoA > { `
+    + decl + '\n' + defs + '\nreturn structs'
+    + '}'
 }
 
 function parseStatements(entrySrc, code) {
