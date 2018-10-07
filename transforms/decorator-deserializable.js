@@ -47,19 +47,11 @@ exports.afterParse = function(parser) {
   entrySrc.statements.forEach(s => {
     if (s.kind === NodeKind.EXPRESSION && s.expression.kind === NodeKind.CALL) {
       const funcName = s.expression.expression.text
-      if (funcName === 'unmarshal') {
+      if (funcName === 'marshal') {
         const args = s.expression.arguments.map(a => a.text)
         const typeName = s.expression.typeArguments[0].name.text
         const typeArgs = []//s.expression.typeArguments.map(t => t.name.text)
-        const code = `
-          unmarshal_impl(
-            ${args[0]},
-            ${args[1]},
-            0,
-            '${typeName}',
-            ${typeArgs ? "[" + typeArgs.join('","') + "]" : "[]"},
-          )
-        `
+        const code = `marshal_${typeName}(${args[0]}, ${args[1]})`
         const statement = parseStatements(entrySrc, code)[0]
         // rewrite function body
         s.expression = statement.expression
@@ -71,7 +63,10 @@ exports.afterParse = function(parser) {
     path.join(__dirname, 'unmarshal-helpers.ts'),
     'utf8'
   )
-  const code = structCode(deserializableClasses) + '\n' + funcFile
+  const code = buildMarshalFuncs(deserializableClasses)
+  console.log('*** *** *** *** *** ')
+  console.log(code)
+  console.log('*** *** *** *** *** ')
   const stmts = parseStatements(entrySrc, code)
 
   // add the new function to the AST as an exported function
@@ -92,22 +87,106 @@ exports.afterParse = function(parser) {
   // entrySrc.statements.push(funcStatement);
 }
 
-function structCode(structs) {
-  const decl = `
-    let structs: Map<string, AoA > = new Map();
-  `
-  const defs = ''
-  Object.keys(structs).forEach(key => {
-    const struct = structs[key]
-    defs += `
-    structs.set('${key}', <AoA>${JSON.stringify(struct)});
-    `
+function buildMarshalFuncs(structs) {
+  const common = `
+
+  @inline
+  function tokenVal(json: string, tok: JsmnToken): string {
+    return json.substring(tok.start, tok.end)
+  }
+
+  function marshal_array<T>(json: string, toks: Array<JsmnToken>): Array<T> {
+    let arr = new Array<T>()
+    let arrTok = toks.shift()
+    assert(arrTok.type === JsmnType.ARRAY)
+    // TODO: check for empty array
+
+    do {
+      let tok: JsmnToken = toks.shift()
+      const val = tokenVal(json, tok)
+      arr.push(42)  // ***  parse
+    } while (toks.length > 0 && toks[0].start < arrTok.end)
+    return arr
+  }
+
+`
+  return common + Object
+    .keys(structs)
+    .map(key => buildMarshal(key, structs[key]))
+    .join('\n')
+}
+
+function buildMarshal(ty, struct) {
+
+  const conditions = struct.map(([key, typeName, ...typeArgs]) => {
+    const [parseCall, jsmnType] = (() => {
+      switch(typeName) {
+        case 'i32':
+        case 'u32':
+          return [
+            `parseI32(val, 10)`,
+            'JsmnType.PRIMITIVE'
+          ]
+        case 'i64':
+        case 'u64':
+          return [
+            `parseI64(val, 10)`,
+            'JsmnType.PRIMITIVE'
+          ]
+        case 'f32':
+        case 'f64':
+          return [
+            'parseFloat(val)',
+            'JsmnType.PRIMITIVE'
+          ]
+        case 'string':
+          return [
+            'val',
+            'JsmnType.STRING'
+          ]
+        case 'Array':
+          const targs = typeArgs.join(',')
+          return [
+            `marshal_array<${targs}>(json, toks)`,
+            'JsmnType.ARRAY'
+          ]
+        default:
+          // TODO: check for invalid type
+          return [
+            `marshal_${typeName}(json, toks)`,
+            'JsmnType.OBJECT'
+          ]
+      }
+    })()
+    return `(key == '${key}') {
+      assert(valTok.type === ${jsmnType})
+      obj.${key} = ${parseCall}
+    }`
   })
+
+  const elseStatement = ` else { /* log<string>('TODO unknown key: ' + key) */ }`
+  const conditionCode = 'if ' + conditions.join(' else if ') + elseStatement
+
   return `
-    type AoA = Array< Array<string> >;
-    function __deserializableClasses(): Map<string, AoA > { `
-    + decl + '\n' + defs + '\nreturn structs'
-    + '}'
+
+function marshal_${ty}(json: string, toks: Array<JsmnToken>): ${ty} {
+  let obj = new ${ty}()
+  let objTok = toks.shift()
+  assert(objTok.type === JsmnType.OBJECT)
+  // TODO: check for empty object
+
+  do {
+    let keyTok: JsmnToken = toks.shift()
+    let valTok: JsmnToken = toks.shift()
+    const key = tokenVal(json, keyTok)
+    const val = tokenVal(json, valTok)
+    // *** begin generated conditionals ***
+    ${ conditionCode }
+    // ***  end generated conditionals  ***
+  } while(toks.length > 0 && toks[0].start < objTok.end)
+  return obj
+}
+  `
 }
 
 function parseStatements(entrySrc, code) {
@@ -118,12 +197,3 @@ function parseStatements(entrySrc, code) {
     null
   ).program.sources[0].statements
 }
-
-
-// const makeParseFn = classes => (className, type) => `
-//   function __jsonParse_${type}(json: string): ${type} {
-//     const tokens = tokenize(json)
-//     unmarshal<(tokens)
-//   }
-// `
-

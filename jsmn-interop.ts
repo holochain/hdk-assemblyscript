@@ -35,28 +35,10 @@ export class JsmnParser {
   toksuper: i32; /* superior token node, e.g parent object or array */
 }
 
-// class Target {
-//   key: string;
-//   val: JsmnToken; // pointer to value
-//   custom: boolean;
-//   type: Target;
+// export declare function unmarshal<T>(
+//   json: string,
+//   toks: Array<JsmnToken>
+// ): T {
+//   // will be rewritten in transform
+//   return changetype<T>(0)
 // }
-
-// int jsmn_parse(jsmn_parser *parser, const char *js, size_t len,
-//     jsmntok_t *tokens, unsigned int num_tokens);
-
-// const json: string = `
-//   {
-//     "a": 0,
-//     "b": "x",
-//     "c": [1, 2, 3]
-//   }
-// `
-
-export function unmarshal<T>(
-  json: string,
-  toks: Array<JsmnToken>
-): T {
-  // will be rewritten in transform
-  return changetype<T>(0)
-}
