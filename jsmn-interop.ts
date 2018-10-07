@@ -1,5 +1,7 @@
+import "allocator/arena"
 
-enum JsmnType {
+@unmanaged
+export enum JsmnType {
   UNDEFINED = 0,
   OBJECT = 1,
   ARRAY = 2,
@@ -7,6 +9,7 @@ enum JsmnType {
   PRIMITIVE = 4
 }
 
+@unmanaged
 enum JsmnError {
   /* Not enough tokens were provided */
   JSMN_ERROR_NOMEM = -1,
@@ -16,7 +19,8 @@ enum JsmnError {
   JSMN_ERROR_PART = -3
 }
 
-class JsmnToken {
+@unmanaged
+export class JsmnToken {
   type: JsmnType;
   start: u32;
   end: u32;
@@ -24,7 +28,8 @@ class JsmnToken {
   parent: u32;
 }
 
-class JsmnParser {
+@unmanaged
+export class JsmnParser {
   pos: u32; /* offset in the JSON string */
   toknext: u32; /* next token to allocate */
   toksuper: i32; /* superior token node, e.g parent object or array */
@@ -49,42 +54,9 @@ class JsmnParser {
 // `
 
 
-function tok(type: JsmnType, start: u32, end: u32): JsmnToken {
-  let t = new JsmnToken()
-  t.type = type
-  t.start = start
-  t.end = end
-  return t
-}
-
-const json: string = `{"a": 0, "b": "x", "c": [1, 2, 3]}`
-
-let toks: Array<JsmnToken> = [
-  tok(JsmnType.OBJECT, 0, 34),
-  tok(JsmnType.STRING, 2, 3),
-  tok(JsmnType.PRIMITIVE, 6, 7),
-  tok(JsmnType.STRING, 10, 11),
-  tok(JsmnType.STRING, 15, 16),
-  tok(JsmnType.STRING, 20, 21),
-  tok(JsmnType.ARRAY, 24, 33),
-  tok(JsmnType.PRIMITIVE, 25, 26),
-  tok(JsmnType.PRIMITIVE, 28, 29),
-  tok(JsmnType.PRIMITIVE, 31, 32),
-]
-
-@deserializable
-class A {
-  a: i32;
-  b: B;
-}
-
-@deserializable
-class B {
-  x: Array<string>;
-}
-
-export function unmarshal(
+export function unmarshal<T>(
+  json: string,
   toks: Array<JsmnToken>
-): void {
-
+): T {
+  return changetype<T>(0)
 }

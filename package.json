@@ -5,7 +5,7 @@
   "main": "index.ts",
   "scripts": {
     "test": "node tests/test_template_generator.js",
-    "dev-jsmn": "asc jsmn-interop --transform transforms/decorator-deserializable"
+    "dev-jsmn": "asc jsmn-test -t tmp/jsmn.wat -b tmp/jsmn.wasm --transform transforms/decorator-deserializable --validate --sourceMap --measure"
   },
   "dependencies": {
     "assemblyscript": "lrettig/assemblyscript#ewasm"
