@@ -2,6 +2,7 @@ const fs = require('fs')
 const path = require('path')
 const {
   CommonFlags,
+  MethodDeclaration,
   Node,
   NodeKind,
   SourceKind,
@@ -45,24 +46,51 @@ exports.afterParse = function(parser) {
   })
 
   entrySrc.statements.forEach(s => {
-    if (s.kind === NodeKind.EXPRESSION && s.expression.kind === NodeKind.CALL) {
-      const funcName = s.expression.expression.text
-      if (funcName === 'marshal') {
-        const args = s.expression.arguments.map(a => a.text)
-        const typeName = s.expression.typeArguments[0].name.text
-        const typeArgs = []//s.expression.typeArguments.map(t => t.name.text)
-        const code = `marshal_${typeName}(${args[0]}, ${args[1]})`
-        const statement = parseStatements(entrySrc, code)[0]
-        // rewrite function body
-        s.expression = statement.expression
-      }
+    if (
+      s.kind === NodeKind.CLASSDECLARATION &&
+      s.decorators &&
+      s.decorators.length &&
+      s.decorators.some(d => d.name.text === "deserializable")
+    ) {
+      const name = s.name.text
+      const marshalCode = buildMarshal(name, deserializableClasses[name])
+      const marshalStmt = parseStatements(entrySrc, marshalCode)[0]
+      // const stmt = new MethodDeclaration();
+      // stmt.range = marshalStmt.range;
+      // stmt.flags = flags;
+      // stmt.name = marshalStmt.name; name.parent = stmt;
+      // stmt.typeParameters = null; if (typeParameters) setParent(typeParameters, stmt);
+      // stmt.signature = marshalStmt.signature; signature.parent = stmt;
+      // stmt.body = marshalStmt.body; if (body) body.parent = stmt;
+      // stmt.decorators = null; if (decorators) setParent(decorators, stmt);
+      const method = Node.createMethodDeclaration(
+        marshalStmt.name,
+        null,
+        marshalStmt.signature,
+        marshalStmt.body,
+        null,
+        CommonFlags.STATIC,
+        entrySrc.range  // TODO
+      )
+      s.members.push(method)
     }
   })
 
-  const funcFile = fs.readFileSync(
-    path.join(__dirname, 'unmarshal-helpers.ts'),
-    'utf8'
-  )
+  // entrySrc.statements.forEach(s => {
+  //   if (s.kind === NodeKind.EXPRESSION && s.expression.kind === NodeKind.CALL) {
+  //     const funcName = s.expression.expression.text
+  //     if (funcName === 'marshal') {
+  //       const args = s.expression.arguments.map(a => a.text)
+  //       const typeName = s.expression.typeArguments[0].name.text
+  //       const typeArgs = []//s.expression.typeArguments.map(t => t.name.text)
+  //       const code = `marshal_${typeName}(${args[0]}, ${args[1]})`
+  //       const statement = parseStatements(entrySrc, code)[0]
+  //       // rewrite function body
+  //       s.expression = statement.expression
+  //     }
+  //   }
+  // })
+
   const code = buildMarshalFuncs(deserializableClasses)
   console.log('*** *** *** *** *** ')
   console.log(code)
@@ -153,7 +181,7 @@ function buildMarshal(ty, struct) {
         default:
           // TODO: check for invalid type
           return [
-            `marshal_${typeName}(json, toks)`,
+            `${typeName}.marshal_${typeName}(json, toks)`,
             'JsmnType.OBJECT'
           ]
       }
@@ -194,7 +222,7 @@ function parseStatements(entrySrc, code) {
   return parseFile(
     code,
     entrySrc.range.source.normalizedPath,
-    true,
+    false,
     null
   ).program.sources[0].statements
 }

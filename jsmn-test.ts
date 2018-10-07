@@ -102,8 +102,8 @@ class B {
 }
 
 
-let s = marshal_S(json_S, toks_S)
-let t = marshal_T(json_T, toks_T)
+let s = S.marshal_S(json_S, toks_S)
+let t = T.marshal_T(json_T, toks_T)
 export function result(): i32 {
   return t.s.a
 }
