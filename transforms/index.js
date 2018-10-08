@@ -14,13 +14,13 @@ const templateGen = require('./function-template-generator')
 const {
   makeFunctionString
 } = templateGen;
-
+const deserializableDecorator = require('./decorator-deserializable')
 
 exports.afterParse = function(parser) {
 
   const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
   const entrySrc = parser.program.sources[entrySrcIdx]
-  
+
   entrySrc.statements.forEach(stmt => {
     if (
       stmt.kind === NodeKind.FUNCTIONDECLARATION &&
@@ -41,15 +41,15 @@ exports.afterParse = function(parser) {
       // rename the old function to be prefixed with an underscore
       stmt.signature.parent.name.text = "_"+func.name;
 
-      // create a new function with the same name that does the unwrapping and 
+      // create a new function with the same name that does the unwrapping and
       // calls the old function
       const callWrapperStmt = parseFile(
         makeFunctionString(func),
-        entrySrc.range.source.normalizedPath, 
+        entrySrc.range.source.normalizedPath,
         true,
         null
       ).program.sources[0].statements[0];
-    
+
       // add the new function to the AST as an exported function
       entrySrc.statements.push(callWrapperStmt);
 
@@ -58,4 +58,6 @@ exports.afterParse = function(parser) {
     }
 
   })
+
+  deserializableDecorator.afterParse(parser)
 }

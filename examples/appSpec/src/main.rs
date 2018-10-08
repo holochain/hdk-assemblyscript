@@ -49,6 +49,16 @@ mod tests {
 
 
     #[test]
+    fn test_marshal() {
+        let mut hc = setup_hc();
+        let marshal_result = hc.call("three", "main", "test_marshal", "");
+        let raw = marshal_result.unwrap();
+        let expected = "\"nested\"";
+        assert_eq!(raw, expected);
+    }
+
+
+    #[test]
     fn test_commit() {
         let mut hc = setup_hc();
         let commit_result = hc.call("three", "main", "test_commit_entry", r#"test value"#);

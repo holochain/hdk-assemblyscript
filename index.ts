@@ -22,6 +22,10 @@ export {
   free
 } from './utils';
 
+
+import {JsmnType, JsmnToken} from './jsmn-interop'
+export {JsmnType, JsmnToken} from './jsmn-interop'
+
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
   function hc_call(encoded_allocation_of_input: u32): u32;

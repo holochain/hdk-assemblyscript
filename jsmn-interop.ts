@@ -1,4 +1,3 @@
-import "allocator/arena"
 
 @unmanaged
 export enum JsmnType {
