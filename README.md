@@ -19,6 +19,7 @@ The medium of communication between holochain core and wasm zomes is strings whi
 
 ### Functions Ready To Implement (in holochain-rust)
 - [ ] call
+- [ ] get_links
 
 ### Functions Not Ready
 - [ ] sign
