@@ -23,7 +23,7 @@ export {
 } from './utils';
 
 import * as JSON from './json';
-export * from './json';
+export {JSON};
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
@@ -79,8 +79,8 @@ export function debug<T>(message: T): void {
   handleSerialization(JSON.stringify(message), (e: u32): u32 => env.hc_debug(e));
 }
 
-export function commit_entry(entryType: string, entryContent: string): string {
-  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
+export function commit_entry<T>(entryType: string, entryContent: T): string {
+  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+JSON.stringify(entryContent)+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
