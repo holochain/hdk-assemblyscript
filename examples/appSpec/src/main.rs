@@ -40,10 +40,17 @@ mod tests {
     }
 
 
+    // #[test]
+    // fn test_debug() {
+    //     let mut hc = setup_hc();
+    //     let _debug_result = hc.call("three", "main", "test_debug", r#"holochain debug!"#);
+    //     assert!(true);
+    // }
+
     #[test]
-    fn test_debug() {
+    fn test_debug_object() {
         let mut hc = setup_hc();
-        let _debug_result = hc.call("three", "main", "test_debug", r#"holochain debug!"#);
+        let _debug_result = hc.call("three", "main", "test_debug_object", r#""#);
         assert!(true);
     }
 
