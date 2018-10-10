@@ -60,7 +60,7 @@ exports.afterParse = function(parser) {
   })
 
   // this will need to be changed to support multiple capabilities
-  writeZomeJSON(zomeFuncs, '../capabilities/main/zome.json')
+  writeZomeJSON(zomeFuncs, '../capabilities/main/autogen.zome.json')
 }
 
 
