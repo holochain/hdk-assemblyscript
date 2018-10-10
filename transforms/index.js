@@ -20,6 +20,7 @@ exports.afterParse = function(parser) {
 
   const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
   const entrySrc = parser.program.sources[entrySrcIdx]
+  let zomeFuncs = []
   
   entrySrc.statements.forEach(stmt => {
     if (
@@ -38,6 +39,8 @@ exports.afterParse = function(parser) {
         returnType: stmt.signature.returnType.name.text
       }
 
+      zomeFuncs.push(func);
+
       // rename the old function to be prefixed with an underscore
       stmt.signature.parent.name.text = "_"+func.name;
 
@@ -52,10 +55,31 @@ exports.afterParse = function(parser) {
     
       // add the new function to the AST as an exported function
       entrySrc.statements.push(callWrapperStmt);
-
-      // TODO: add some data to the manifest.json
-
     }
 
   })
+
+  writeZomeJSON(zomeFuncs, '.')
+}
+
+
+function writeZomeJSON(zomeFuncs, path) {
+  let zome;
+  if (fs.existsSync(path)) { // update an existing zome.json
+    let rawJSON = fs.readFileSync(path);
+    zome = JSON.parse(rawJSON);
+  } else { // have to create a new one from scratch
+
+    zome = {
+      description: "",
+      capability: {
+        membrane: "agent"
+      },
+      functions: []
+    }
+  }
+
+  zome.functions = zomeFuncs.map(func => {
+    
+  });
 }

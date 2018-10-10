@@ -26,10 +26,10 @@ function makePreamble(funcDef) {
 	if(funcDef.params.length === 0) {
 		return ``;
 	} else if (funcDef.params.length === 1) {
-		if(funcDef.params[0].type === 'string') {
+		if(funcDef.params[0].type === 'string' || funcDef.params[0].type === 'Hash') {
 			return `let paramString: string = deserialize(e);`;
 		} else {
-			throw Error("Only string input parameters supported at this time.");
+			throw Error("Only string and Hash input parameters supported at this time.");
 		}
 	} else {
 		throw Error("Multiple parameters not yet supported for zome functions.");
@@ -58,7 +58,8 @@ function makePostamble(funcDef) {
 	switch(funcDef.returnType) {
 		case 'void':
 			return `return 0;`;
-		case 'string':
+		case 'string': 
+		case 'Hash':
 			return 	`return serialize(result)`;
 		default:
 			throw Error("Return type not yet supported.");

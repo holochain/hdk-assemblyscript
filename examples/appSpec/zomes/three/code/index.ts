@@ -10,7 +10,6 @@ import {
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
 
-
 /*----------  Public Functions  ----------*/
 
 @zome_function
@@ -24,7 +23,7 @@ function test_commit_entry(jsonStringParams: string): string {
 }
 
 @zome_function
-function test_get_entry(hash: string): string {
+function test_get_entry(hash: Hash): string {
   return get_entry(hash);
 }
 
