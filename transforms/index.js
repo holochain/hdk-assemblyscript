@@ -64,10 +64,10 @@ exports.afterParse = function(parser) {
 }
 
 
-function writeZomeJSON(zomeFuncs, path) {
+function writeZomeJSON(zomeFuncs, outputPath) {
   let zome;
-  if (fs.existsSync(path)) { // update an existing zome.json
-    let rawJSON = fs.readFileSync(path);
+  if (fs.existsSync(outputPath)) { // update an existing zome.json
+    let rawJSON = fs.readFileSync(outputPath);
     zome = JSON.parse(rawJSON);
   } else { // have to create a new one from scratch
 
@@ -88,5 +88,21 @@ function writeZomeJSON(zomeFuncs, path) {
     }
   });
 
-  fs.writeFileSync(path, JSON.stringify(zome, null, 2));
+  ensureDirectoryExistence(outputPath);
+
+  try {
+    fs.writeFileSync(outputPath, JSON.stringify(zome, null, 2));
+  } catch (err) {
+    throw Error("Unable to create file at "+outputPath);
+  }
+}
+
+// will recursively create all the directories required to form a path
+function ensureDirectoryExistence(filePath) {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
 }
