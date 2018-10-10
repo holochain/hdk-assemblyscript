@@ -1,6 +1,8 @@
+declare type Hash = string;
+
 @unmanaged
 export class CommitResult {
-	hash: string;
+	hash: Hash;
 }
 
 @unmanaged
@@ -8,7 +10,7 @@ export class Header {
 	entryType: string;
 	timestamp: string;
 	link: string;
-	entryHash: string;
+	entryHash: Hash;
 	entrySignature: string;
 	linkSameType: boolean;
 }
@@ -34,9 +36,9 @@ export class GetResult {
 @unmanaged
 export class Globals {
     app_name: string
-    app_dna_hash: string
+    app_dna_hash: Hash
     app_agent_id_str: string
-    app_agent_key_hash: string
-    app_agent_initial_hash: string
-    app_agent_latest_hash: string
+    app_agent_key_hash: Hash
+    app_agent_initial_hash: Hash
+    app_agent_latest_hash: Hash
 }

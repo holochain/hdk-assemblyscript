@@ -1,6 +1,6 @@
 import "allocator/tlsf";
 
-import {Globals} from "./types"
+import { Globals } from "./types"
 
 import {
   u32_high_bits,
@@ -21,6 +21,7 @@ export {
   errorCodeToString,
   free
 } from './utils';
+
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
@@ -81,7 +82,7 @@ export function commit_entry(entryType: string, entryContent: string): string {
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
-export function get_entry(hash: string): string {
+export function get_entry(hash: Hash): string {
   let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
