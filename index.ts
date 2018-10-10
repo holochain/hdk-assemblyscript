@@ -9,7 +9,7 @@ import {
   deserialize,
   check_encoded_allocation,
   errorCodeToString,
-  free
+  free,
 } from './utils';
 
 export {
@@ -21,6 +21,9 @@ export {
   errorCodeToString,
   free
 } from './utils';
+
+import * as JSON from './json';
+export * from './json';
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
@@ -72,8 +75,8 @@ function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   }
 }
 
-export function debug(message: string): void {
-  handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
+export function debug<T>(message: T): void {
+  handleSerialization(JSON.stringify(message), (e: u32): u32 => env.hc_debug(e));
 }
 
 export function commit_entry(entryType: string, entryContent: string): string {
