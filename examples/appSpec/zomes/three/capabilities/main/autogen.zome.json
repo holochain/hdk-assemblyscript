@@ -29,7 +29,7 @@
       "inputs": [
         {
           "name": "hash",
-          "type": "hash"
+          "type": "string"
         }
       ],
       "outputs": []

@@ -28,8 +28,8 @@
       "name": "test_get_entry",
       "inputs": [
         {
-          "name": "hash",
-          "type": "hash"
+          "name": "string",
+          "type": "string"
         }
       ],
       "outputs": []

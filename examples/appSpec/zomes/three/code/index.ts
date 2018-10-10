@@ -23,7 +23,7 @@ function test_commit_entry(jsonStringParams: string): string {
 }
 
 @zome_function
-function test_get_entry(hash: hash): string {
+function test_get_entry(hash: string): string {
   return get_entry(hash);
 }
 
