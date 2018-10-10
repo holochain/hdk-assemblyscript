@@ -82,7 +82,7 @@ export function commit_entry(entryType: string, entryContent: string): string {
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
-export function get_entry(hash: Hash): string {
+export function get_entry(hash: hash): string {
   let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }

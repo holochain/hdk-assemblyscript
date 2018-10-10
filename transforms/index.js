@@ -59,7 +59,8 @@ exports.afterParse = function(parser) {
 
   })
 
-  writeZomeJSON(zomeFuncs, '.')
+  // this will need to be changed to support multiple capabilities
+  writeZomeJSON(zomeFuncs, '../capabilities/main/zome.json')
 }
 
 
@@ -80,6 +81,12 @@ function writeZomeJSON(zomeFuncs, path) {
   }
 
   zome.functions = zomeFuncs.map(func => {
-    
+    return {
+      name: func.name,
+      inputs: func.params,
+      outputs: []
+    }
   });
+
+  fs.writeFileSync(path, JSON.stringify(zome, null, 2));
 }
