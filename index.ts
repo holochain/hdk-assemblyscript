@@ -68,7 +68,7 @@ function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   let result: u32 = api_call(encoded_allocation);
   let resultCode = check_encoded_allocation(result);
 
-  if(resultCode === ErrorCode.Success) {
+  if(resultCode == ErrorCode.Success) {
     return deserialize(result)
   } else {
     return errorCodeToString(resultCode)
@@ -95,7 +95,7 @@ export function commit_entry<T>(entryType: string, entryContent: T): string {
 }
 
 export function get_entry(hash: string): string {
-  let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
+  let jsonEncodedParams: string = `{"address":"`+hash+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
 

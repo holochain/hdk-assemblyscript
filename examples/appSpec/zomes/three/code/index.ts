@@ -10,7 +10,6 @@ import {
 } from "../../../../../index"
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
-
 /*----------  Public Functions  ----------*/
 
 @zome_function
@@ -51,10 +50,14 @@ function test_init_globals(): string {
 	return init_globals();
 }
 
+export function genesis(encoded_allocation: u32): u32 {
+  return 0;
+}
+
 /*----------  Callbacks  ----------*/
 
 
-export function validate_commit(encoded_allocation: u32): u32 {
+export function validate_message(encoded_allocation: u32): u32 {
   return 0;
 }
 
