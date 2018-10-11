@@ -8,13 +8,13 @@ import {
 
 
 export function stringify<T>(x: T): string {
-  if(sizeof<T>() == 1) { // bools are only one byte so this is how we detect them
+  if ( x instanceof bool ) {
     if (x) {
       return 'true'
     } else {
       return 'false'
     }
-  } else if(x == null) {
+  } else if ( x == null) {
     return 'null'
   } else if(isString<T>(x)) {
     return '"'+<string>x+'"';
