@@ -9,6 +9,15 @@ const {
 } = assemblyscript;
 
 
+
+/*
+*   @can_stringify decorator
+*   ========================
+*   Adds the method toString to any class which returns a json string with all the class members include. 
+*   Can also convert nested objects and arrays but each object must imlement a toString method
+*
+*/
+
 exports.applyTransform = function(parser) {
 
   const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)

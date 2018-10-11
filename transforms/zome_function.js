@@ -9,6 +9,16 @@ const {
 } = assemblyscript;
 
 
+/*
+*   @zome_function decorator
+*   ========================
+*   Informs the compiler that a particular function should be exported 
+*   and made callable by holochain as a zome function.
+*   A new exported function is created that handles serializing 
+*   and deserializing of parameters. 
+*   Also adds an entry to the zome.json
+*/
+
 exports.applyTransform = function(parser) {
 
   const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
