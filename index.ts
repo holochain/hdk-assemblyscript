@@ -9,7 +9,7 @@ import {
   deserialize,
   check_encoded_allocation,
   errorCodeToString,
-  free
+  free,
 } from './utils';
 
 export {
@@ -21,6 +21,9 @@ export {
   errorCodeToString,
   free
 } from './utils';
+
+import { stringify } from './json';
+export { stringify } from './json';
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
@@ -72,12 +75,22 @@ function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   }
 }
 
-export function debug(message: string): void {
-  handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
+export function debug<T>(message: T): void {
+  if(isString<T>(message)) {
+    handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
+  } else {
+    handleSerialization(stringify(message), (e: u32): u32 => env.hc_debug(e));
+  }
 }
 
-export function commit_entry(entryType: string, entryContent: string): string {
-  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
+export function commit_entry<T>(entryType: string, entryContent: T): string {
+  let entryContentString: String;
+  if(isString<T>(entryContent)) {
+    entryContentString = entryType;
+  } else {
+    entryContentString = stringify(entryType);
+  }
+  let jsonEncodedParams = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContentString+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 

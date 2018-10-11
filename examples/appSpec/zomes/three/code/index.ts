@@ -5,7 +5,8 @@ import {
   commit_entry,
   get_entry,
   init_globals,
-  check_encoded_allocation
+  check_encoded_allocation,
+  stringify
 } from "../../../../../index"
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
@@ -16,6 +17,24 @@ import {
 @zome_function
 function test_debug(val: string): void {
   debug(val);
+}
+
+@can_stringify
+class X {
+  a: string
+  b: i32
+  c: Array<Y>
+}
+
+@can_stringify
+class Y {
+  n: bool
+}
+
+@zome_function
+function test_debug_object(): void {
+  let c: X = {a: "hi", b: 20, c: [{n: false},{n:true}]}
+  debug(c);
 }
 
 @zome_function
