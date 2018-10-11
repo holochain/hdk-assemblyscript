@@ -15,6 +15,11 @@
       "outputs": []
     },
     {
+      "name": "test_debug_object",
+      "inputs": [],
+      "outputs": []
+    },
+    {
       "name": "test_commit_entry",
       "inputs": [
         {

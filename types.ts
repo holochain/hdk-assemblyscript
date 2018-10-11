@@ -9,7 +9,7 @@ export class Header {
 	entryType: string;
 	timestamp: string;
 	link: string;
-	entryhash: string;
+	entryHash: string;
 	entrySignature: string;
 	linkSameType: boolean;
 }
