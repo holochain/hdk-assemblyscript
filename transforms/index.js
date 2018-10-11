@@ -1,8 +1,8 @@
 
 const zomeFunctions = require('./zome_function');
-const can_stringify = require('./can_stringify');
+const canStringify = require('./can_stringify');
 
 exports.afterParse = function(parser) {
-	can_stringify.applyTransform(parser);
+	canStringify.applyTransform(parser);
 	zomeFunctions.applyTransform(parser);
 }
