@@ -1,3 +1,5 @@
+const fs = require('fs');
+const path = require('path');
 const assemblyscript = require('assemblyscript');
 const {
   CommonFlags,
@@ -21,8 +23,9 @@ const {
 
 exports.applyTransform = function(parser) {
 
-  const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry)
-  const entrySrc = parser.program.sources[entrySrcIdx]
+  const entrySrcIdx = parser.program.sources.findIndex(s => s.isEntry);
+  const entrySrc = parser.program.sources[entrySrcIdx];
+  let zomeFuncs = [];
   
   entrySrc.statements.forEach(stmt => {
     if (
@@ -41,6 +44,8 @@ exports.applyTransform = function(parser) {
         returnType: stmt.signature.returnType.name.text
       }
 
+      zomeFuncs.push(func);
+
       // rename the old function to be prefixed with an underscore
       stmt.signature.parent.name.text = "_"+func.name;
 
@@ -55,12 +60,12 @@ exports.applyTransform = function(parser) {
     
       // add the new function to the AST as an exported function
       entrySrc.statements.push(callWrapperStmt);
-
-      // TODO: add some data to the manifest.json
-
     }
 
   })
+
+  // this will need to be changed to support multiple capabilities
+  writeZomeJSON(zomeFuncs, '../capabilities/main/autogen.zome.json')
 }
 
 
@@ -128,4 +133,49 @@ function makePostamble(funcDef) {
     default:
       throw Error("Return type not yet supported.");
   }
+}
+
+// The following functions are for doing the autogen of JSON for the capabilities
+
+function writeZomeJSON(zomeFuncs, outputPath) {
+  let zome;
+  if (fs.existsSync(outputPath)) { // update an existing zome.json
+    let rawJSON = fs.readFileSync(outputPath);
+    zome = JSON.parse(rawJSON);
+  } else { // have to create a new one from scratch
+
+    zome = {
+      description: "",
+      capability: {
+        membrane: "agent"
+      },
+      functions: []
+    }
+  }
+
+  zome.functions = zomeFuncs.map(func => {
+    return {
+      name: func.name,
+      inputs: func.params,
+      outputs: []
+    }
+  });
+
+  ensureDirectoryExistence(outputPath);
+
+  try {
+    fs.writeFileSync(outputPath, JSON.stringify(zome, null, 2));
+  } catch (err) {
+    throw Error("Unable to create file at "+outputPath);
+  }
+}
+
+// will recursively create all the directories required to form a path
+function ensureDirectoryExistence(filePath) {
+  var dirname = path.dirname(filePath);
+  if (fs.existsSync(dirname)) {
+    return true;
+  }
+  ensureDirectoryExistence(dirname);
+  fs.mkdirSync(dirname);
 }

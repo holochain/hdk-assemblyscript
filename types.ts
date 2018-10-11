@@ -1,3 +1,4 @@
+
 @unmanaged
 export class CommitResult {
 	hash: string;

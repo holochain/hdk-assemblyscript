@@ -1,6 +1,6 @@
 import "allocator/tlsf";
 
-import {Globals} from "./types"
+import { Globals } from "./types"
 
 import {
   u32_high_bits,

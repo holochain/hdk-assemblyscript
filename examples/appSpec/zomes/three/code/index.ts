@@ -11,7 +11,6 @@ import {
 //TODO: Remove this relative import and link to node_modules. Ok for dev
 
 
-
 /*----------  Public Functions  ----------*/
 
 @zome_function

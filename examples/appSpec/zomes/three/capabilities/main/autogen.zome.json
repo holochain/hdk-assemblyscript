@@ -1,12 +1,17 @@
 {
-  "description": "The three App",
+  "description": "",
   "capability": {
     "membrane": "agent"
   },
   "functions": [
     {
       "name": "test_debug",
-      "inputs": [{ "name": "val", "type": "string" }],
+      "inputs": [
+        {
+          "name": "val",
+          "type": "string"
+        }
+      ],
       "outputs": []
     },
     {
@@ -16,12 +21,22 @@
     },
     {
       "name": "test_commit_entry",
-      "inputs": [{ "name": "jsonStringParams", "type": "string" }],
+      "inputs": [
+        {
+          "name": "jsonStringParams",
+          "type": "string"
+        }
+      ],
       "outputs": []
     },
     {
       "name": "test_get_entry",
-      "inputs": [{ "name": "hash", "type": "string" }],
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "string"
+        }
+      ],
       "outputs": []
     },
     {
