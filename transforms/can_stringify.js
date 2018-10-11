@@ -19,10 +19,10 @@ exports.applyTransform = function(parser) {
       s.kind === NodeKind.CLASSDECLARATION &&
       s.decorators &&
       s.decorators.length &&
-      s.decorators.some(d => d.name.text === "serializable")
+      s.decorators.some(d => d.name.text === "can_stringify")
     ) {
       if (s.isGeneric) {
-        throw Error("Generic classes are not currently @serializable")
+        throw Error("Generic classes can not use @can_stringify")
       }
 
       // grab the names of all the members

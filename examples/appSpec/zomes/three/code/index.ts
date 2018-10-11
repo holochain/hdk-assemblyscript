@@ -19,7 +19,7 @@ function test_debug(val: string): void {
   debug(val);
 }
 
-@serializable
+@can_stringify
 class TestClass {
   constructor(
     public a: string,
