@@ -16,8 +16,7 @@ exports.applyTransform = function(parser) {
 
   entrySrc.statements.forEach((s, i) => {
     if (
-      // s.kind === NodeKind.CLASSDECLARATION &&
-      s.kind === 45 && // NodeKind is not exported in the latest assemblyscript!!
+      s.kind === NodeKind.CLASSDECLARATION &&
       s.decorators &&
       s.decorators.length &&
       s.decorators.some(d => d.name.text === "serializable")

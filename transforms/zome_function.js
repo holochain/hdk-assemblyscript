@@ -16,7 +16,7 @@ exports.applyTransform = function(parser) {
   
   entrySrc.statements.forEach(stmt => {
     if (
-      stmt.kind === 49 && //NodeKind.FUNCTIONDECLARATION &&
+      stmt.kind === NodeKind.FUNCTIONDECLARATION &&
       stmt.decorators &&
       stmt.decorators.length &&
       stmt.decorators.some(d => d.name.text === "zome_function")
