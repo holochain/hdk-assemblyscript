@@ -20,16 +20,20 @@ function test_debug(val: string): void {
 }
 
 @can_stringify
-class TestClass {
-  constructor(
-    public a: string,
-    public b: i32,
-    public c: bool) { }
+class X {
+  a: string
+  b: i32
+  c: Array<Y>
+}
+
+@can_stringify
+class Y {
+  n: bool
 }
 
 @zome_function
 function test_debug_object(): void {
-  let c = new TestClass("hi", 22, false);
+  let c: X = {a: "hi", b: 20, c: [{n: false},{n:true}]}
   debug(c);
 }
 
