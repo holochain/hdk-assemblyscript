@@ -50,9 +50,6 @@ function test_init_globals(): string {
 	return init_globals();
 }
 
-export function genesis(encoded_allocation: u32): u32 {
-  return 0;
-}
 
 /*----------  Callbacks  ----------*/
 
@@ -61,7 +58,6 @@ export function validate_message(encoded_allocation: u32): u32 {
   return 0;
 }
 
-// export function genesis(encoded_allocation: u32): u32 {
-//   debug("Genesis");
-//   return 0;	
-// }
+export function genesis(encoded_allocation: u32): u32 {
+  return 0;
+}
