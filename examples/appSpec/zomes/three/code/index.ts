@@ -37,6 +37,9 @@ function test_debug_object(): void {
 
 @zome_function
 function test_commit_entry(jsonStringParams: string): string {
+  debug("hi");
+  debug("sup");
+  debug("aslkdfjsa dkfjasldkfj asdklfj aslkdfj sadfljasdlfkja sdflkaj df");
   return commit_entry("message", jsonStringParams);
 }
 
