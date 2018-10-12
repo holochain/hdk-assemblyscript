@@ -12,14 +12,13 @@ export function u32_high_bits(encoded_allocation: u32): u16 {
 
 export function u32_low_bits(encoded_allocation: u32): u16 {
   // type cast and remainder
-  let low: u16 = encoded_allocation as u16 % u16.MAX_VALUE;
-  return low;
+  return encoded_allocation as u16;
 }
 
 // offset, length
 export function u32_merge_bits(high: u16, low: u16): u32 {
   // left shift, bitwise or
-  return high as u32 << 16 | (low as u32);
+  return <u32>high << 16 | <u32>low;
 }
 
 
