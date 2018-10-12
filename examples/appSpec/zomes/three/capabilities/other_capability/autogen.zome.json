@@ -1,0 +1,13 @@
+{
+  "description": "",
+  "capability": {
+    "membrane": "agent"
+  },
+  "functions": [
+    {
+      "name": "test_init_globals",
+      "inputs": [],
+      "outputs": []
+    }
+  ]
+}

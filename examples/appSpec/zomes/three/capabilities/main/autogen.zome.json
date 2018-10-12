@@ -38,11 +38,6 @@
         }
       ],
       "outputs": []
-    },
-    {
-      "name": "test_init_globals",
-      "inputs": [],
-      "outputs": []
     }
   ]
 }

@@ -32,8 +32,17 @@ exports.applyTransform = function(parser) {
       stmt.kind === NodeKind.FUNCTIONDECLARATION &&
       stmt.decorators &&
       stmt.decorators.length &&
-      stmt.decorators.some(d => d.name.text === "zome_function")
+      stmt.decorators.some(d => d.name.text === "capability")
     ) {
+
+      // retrieve the parameter (which capability)
+      const decoratorArgs = stmt.decorators
+        .filter(d => d.name.text === "capability")[0]
+        .arguments
+
+      if(decoratorArgs.length !== 1) {
+        throw Error("capability decorator must specify a single string argument that is the capability to add the function to.")
+      }
 
       // unpack what we need from this function
       const func = {
@@ -41,7 +50,8 @@ exports.applyTransform = function(parser) {
         params: stmt.signature.parameters.map((param) => {
           return {name: param.name.text, type: param.type.name.text}
         }),
-        returnType: stmt.signature.returnType.name.text
+        returnType: stmt.signature.returnType.name.text,
+        capability: decoratorArgs[0].value
       }
 
       zomeFuncs.push(func);
@@ -64,8 +74,19 @@ exports.applyTransform = function(parser) {
 
   })
 
-  // this will need to be changed to support multiple capabilities
-  writeZomeJSON(zomeFuncs, '../capabilities/main/autogen.zome.json')
+  const capabilitiesRoot = "../capabilities/"
+  // group funcs by capabilities
+  capabilities = {}
+  zomeFuncs.forEach(func => {
+    if(!capabilities[func.capability]) { 
+      capabilities[func.capability] = [] 
+    }
+    capabilities[func.capability].push(func)
+  })
+
+  for (let cap in capabilities) {
+    writeZomeJSON(capabilities[cap], capabilitiesRoot+cap+'/autogen.zome.json')
+  }
 }
 
 

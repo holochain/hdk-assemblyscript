@@ -13,7 +13,7 @@ import {
 
 /*----------  Public Functions  ----------*/
 
-@zome_function
+@capability('main')
 function test_debug(val: string): void {
   debug(val);
 }
@@ -30,23 +30,23 @@ class Y {
   n: bool
 }
 
-@zome_function
+@capability('main')
 function test_debug_object(): void {
   let c: X = {a: "hi", b: 20, c: [{n: false},{n:true}]}
   debug(c);
 }
 
-@zome_function
+@capability('main')
 function test_commit_entry(jsonStringParams: string): string {
   return commit_entry("message", jsonStringParams);
 }
 
-@zome_function
+@capability('main')
 function test_get_entry(hash: string): string {
   return get_entry(hash);
 }
 
-@zome_function
+@capability('other_capability')
 function test_init_globals(): string {
 	return init_globals();
 }

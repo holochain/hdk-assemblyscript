@@ -1,8 +1,8 @@
 
-const zomeFunctions = require('./zome_function');
+const capability = require('./capability');
 const canStringify = require('./can_stringify');
 
 exports.afterParse = function(parser) {
   canStringify.applyTransform(parser);
-  zomeFunctions.applyTransform(parser);
+  capability.applyTransform(parser);
 }

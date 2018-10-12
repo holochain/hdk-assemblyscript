@@ -85,7 +85,7 @@ mod tests {
     #[test]
     fn test_init_globals() {
         let mut hc = setup_hc();
-        let globals_result = hc.call("three", "main", "test_init_globals", "");
+        let globals_result = hc.call("three", "other_capability", "test_init_globals", "");
         assert!(globals_result.is_ok());
 
         let globals_result_string = globals_result.unwrap();
