@@ -47,7 +47,7 @@ function test_get_entry(hash: string): string {
 
 @zome_function
 function test_init_globals(): string {
-	return init_globals();
+  return init_globals();
 }
 
 
