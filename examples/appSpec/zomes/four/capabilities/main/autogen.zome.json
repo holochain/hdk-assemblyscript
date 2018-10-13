@@ -1,0 +1,18 @@
+{
+  "description": "",
+  "capability": {
+    "membrane": "public"
+  },
+  "functions": [
+    {
+      "name": "testfunction",
+      "inputs": [
+        {
+          "name": "param1",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

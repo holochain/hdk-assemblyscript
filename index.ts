@@ -99,6 +99,11 @@ export function get_entry(hash: string): string {
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
 
+export function call(zome_name: string, cap_name: string, fn_name: string, fn_args: string): string {
+  let jsonEncodedParams: string = `{"zome_name":"`+zome_name+`", "cap_name":"`+cap_name+`", "fn_name":"`+fn_name+`", "fn_args":"`+fn_args+`"}`;
+  return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_call(e));
+}
+
 export function init_globals(): string {
   return handleSerialization("", (e: u32): u32 => env.hc_init_globals(e));
 }

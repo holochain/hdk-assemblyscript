@@ -3,6 +3,7 @@ import {
   deserialize,
   debug,
   commit_entry,
+  call,
   get_entry,
   init_globals,
   check_encoded_allocation,
@@ -48,6 +49,11 @@ function test_get_entry(hash: string): string {
 @zome_function
 function test_init_globals(): string {
   return init_globals();
+}
+
+@zome_function
+function test_call(input: string): string {
+  return call("four", "main", "testfunction", "hi");
 }
 
 

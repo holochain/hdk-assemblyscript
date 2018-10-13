@@ -43,6 +43,16 @@
       "name": "test_init_globals",
       "inputs": [],
       "outputs": []
+    },
+    {
+      "name": "test_call",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "string"
+        }
+      ],
+      "outputs": []
     }
   ]
 }
