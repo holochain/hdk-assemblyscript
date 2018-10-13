@@ -53,14 +53,7 @@ export function serialize(val: string): u32 {
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
-  // holochain passes a null terminated string FROM api calls
-  // but passes non-null terminated TO zome function calls
-  // remove the null termination if present
-  // if(load<u8>(offset+length-1) == 0)
-    // return String.fromUTF8(offset, length-1);
-  // else
-    return String.fromUTF8(offset, length);
-
+  return String.fromUTF8(offset, length);
 }
 
 
