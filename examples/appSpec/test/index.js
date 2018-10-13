@@ -12,15 +12,23 @@ hctest('test commit_entry', (app, t) => {
   } catch (e) {
     t.end()
   }
-  t.deepEqual(obj, { address: 'QmZsRsCTUGBy7ox5hiitArDfCjxUJxvoLLZBwZrmCy5wv4' })
+  t.deepEqual(obj, { address: 'QmRN6wdp1S2A5EtjW9A3M1vKSBuQQGcgvuhoMUoEz4iiT5' })
 })
 
 hctest('test get_entry', (app, t) => {
   t.plan(1)
   app.call("three", "main", "test_commit_entry", "hello")
-  let result = app.call("three", "main", "test_get_entry", "QmZsRsCTUGBy7ox5hiitArDfCjxUJxvoLLZBwZrmCy5wv4")
-  // TODO: fix this once GET gets fixed
-  t.equal(result, '"message"')
+  let result = app.call("three", "main", "test_get_entry", "QmRN6wdp1S2A5EtjW9A3M1vKSBuQQGcgvuhoMUoEz4iiT5")
+  let obj
+  try {
+    obj = JSON.parse(result)
+  } catch (e) {
+    t.end()
+  }
+  t.deepEqual(obj, {
+    status: "Found",
+    entry: "hello"
+  })
 })
 
 hctest('test init_globals', (app, t) => {
