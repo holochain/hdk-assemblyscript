@@ -1,5 +1,4 @@
 import "allocator/tlsf";
-import { allocateUnsafe, copyUnsafe, HEADER_SIZE } from "internal/string"
 import { ErrorCode, debug } from "./index"
 
 
@@ -41,15 +40,11 @@ export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
 
 // writes string to memory, then returns encoded allocation ref
 export function serialize(val: string): u32 {
-  let dataLength = val.length;
-  // each char takes two bytes, encoded
-  let ptr = memory.allocate(dataLength << 1);
-  //checkMem();
-  for (let i = 0; i < dataLength; ++i) {
-    store<u16>(ptr + i, val.charCodeAt(i));
-  }
-  let encoded_allocation = u32_merge_bits(ptr as u16, dataLength as u16);
-  return encoded_allocation;
+  let ptr = val.toUTF8();
+  // holochain is expecting a sequence of valid utf-8 bytes not null terminated
+  // toUTF8 adds a null termination so drop the last byte
+  let length = val.lengthUTF8 - 1;
+  return u32_merge_bits(<u16>ptr, <u16>length);
 }
 
 
@@ -57,18 +52,9 @@ export function serialize(val: string): u32 {
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
-  let res: string = allocateUnsafe(length);
-
-  // TODO: figure out how to do this in a single copy. Need to change boundaries on characters
-  for (let i: u16 = 0; i < length; i++) {
-    memory.copy(
-      changetype<usize>(res) + HEADER_SIZE + (i<<1),
-      changetype<usize>(offset) + i,
-      1
-    );
-  }
-  return res;
+  return String.fromUTF8(offset, length);
 }
+
 
 
 export function free(ptr: u32): void {
