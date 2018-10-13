@@ -86,9 +86,9 @@ export function debug<T>(message: T): void {
 export function commit_entry<T>(entryType: string, entryContent: T): string {
   let entryContentString: String;
   if(isString<T>(entryContent)) {
-    entryContentString = entryType;
+    entryContentString = entryContent;
   } else {
-    entryContentString = stringify(entryType);
+    entryContentString = stringify(entryContent);
   }
   let jsonEncodedParams = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContentString+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
