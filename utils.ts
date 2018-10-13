@@ -1,5 +1,4 @@
 import "allocator/tlsf";
-import { allocateUnsafe, copyUnsafe, HEADER_SIZE } from "internal/string"
 import { ErrorCode, debug } from "./index"
 
 
