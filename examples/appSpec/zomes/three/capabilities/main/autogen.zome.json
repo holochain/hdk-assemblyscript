@@ -53,6 +53,16 @@
         }
       ],
       "outputs": []
+    },
+    {
+      "name": "loopback",
+      "inputs": [
+        {
+          "name": "s",
+          "type": "string"
+        }
+      ],
+      "outputs": []
     }
   ]
 }

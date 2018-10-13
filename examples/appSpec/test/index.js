@@ -43,6 +43,24 @@ hctest('test get_entry', (app, t) => {
   })
 })
 
+hctest('test round trip', (app, t) => {
+  const testStrings = [
+    "test word string",
+    "test single byte symbols {}{}[]\"*&^%",
+    "test multi byte symbols \u{0024} \u{00A2} \u{20AC} \u{10348}",
+    "test null chars \0 \0 \0"
+  ]
+
+  for(let s in testStrings) {
+    t.deepEqual(
+      app.call("three", "main", "loopback", s),
+      s
+    )
+  }
+  t.end();
+
+})
+
 hctest('test init_globals', (app, t) => {
   t.plan(1)
   let result = app.call("three", "main", "test_init_globals", "")

@@ -56,6 +56,11 @@ function test_call(input: string): string {
   return call("four", "main", "testfunction", "hi");
 }
 
+@zome_function
+function loopback(s: string): string {
+  return s;
+}
+
 
 /*----------  Callbacks  ----------*/
 
