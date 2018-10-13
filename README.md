@@ -132,5 +132,13 @@ The above still has some limitations such as:
 
 This may or may not be acceptable going forward
 
-## Generating manifest.json
-This will be done as part of the transform process in the build pipeline
+# Running Tests
+
+To run the tests of this repo...
+
+First, make sure you have the latest version of [hc](https://github.com/holochain/holochain-cmd) and [hcx](https://github.com/holochain/holosqape) installed.
+
+```shell
+cd examples/appSpec
+hc test | test/node_modules/faucet/bin/cmd.js
+```
