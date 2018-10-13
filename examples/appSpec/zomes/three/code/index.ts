@@ -50,6 +50,11 @@ function test_init_globals(): string {
   return init_globals();
 }
 
+@zome_function
+export function loopback(s: string): string {
+  return s;
+}
+
 
 /*----------  Callbacks  ----------*/
 

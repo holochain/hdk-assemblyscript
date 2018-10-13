@@ -56,9 +56,9 @@ export function deserialize(encoded_allocation: u32): string {
   // holochain passes a null terminated string FROM api calls
   // but passes non-null terminated TO zome function calls
   // remove the null termination if present
-  if(load<u8>(offset+length-1) == 0)
-    return String.fromUTF8(offset, length-1);
-  else
+  // if(load<u8>(offset+length-1) == 0)
+    // return String.fromUTF8(offset, length-1);
+  // else
     return String.fromUTF8(offset, length);
 
 }

@@ -43,6 +43,16 @@
       "name": "test_init_globals",
       "inputs": [],
       "outputs": []
+    },
+    {
+      "name": "loopback",
+      "inputs": [
+        {
+          "name": "s",
+          "type": "string"
+        }
+      ],
+      "outputs": []
     }
   ]
 }
