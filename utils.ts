@@ -43,7 +43,9 @@ export function check_encoded_allocation(encoded_allocation: u32): ErrorCode {
 // writes string to memory, then returns encoded allocation ref
 export function serialize(val: string): u32 {
   let ptr = val.toUTF8();
-  let length = val.length;
+  // holochain is expecting a sequence of valid utf-8 bytes not null terminated
+  // toUTF8 adds a null termination so drop the last byte
+  let length = val.lengthUTF8 - 1;
   return u32_merge_bits(<u16>ptr, <u16>length);
 }
 
@@ -52,8 +54,16 @@ export function serialize(val: string): u32 {
 export function deserialize(encoded_allocation: u32): string {
   let offset = u32_high_bits(encoded_allocation);
   let length = u32_low_bits(encoded_allocation);
-  return String.fromUTF8(offset, length);
+  // holochain passes a null terminated string FROM api calls
+  // but passes non-null terminated TO zome function calls
+  // remove the null termination if present
+  if(load<u8>(offset+length-1) == 0)
+    return String.fromUTF8(offset, length-1);
+  else
+    return String.fromUTF8(offset, length);
+
 }
+
 
 
 export function free(ptr: u32): void {
