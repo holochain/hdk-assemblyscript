@@ -3,6 +3,18 @@
 
 import {hctest} from './test-helper'
 
+hctest('test debug_object', (app, t) => {
+  t.plan(1)
+  let result = app.call("three", "main", "test_debug_object", "")
+  let obj
+  try {
+    obj = JSON.parse(result)
+  } catch (e) {
+    t.end()
+  }
+  t.deepEqual(obj, { a: 'hi', b: 20, c: [ { n: false }, { n: true } ] })
+})
+
 hctest('test commit_entry', (app, t) => {
   t.plan(1)
   let result = app.call("three", "main", "test_commit_entry", "hello")
