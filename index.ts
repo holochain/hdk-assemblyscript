@@ -83,19 +83,21 @@ export function debug<T>(message: T): void {
   }
 }
 
-export function commit_entry<T>(entryType: string, entryContent: T): string {
-  let entryContentString: String;
-  if(isString<T>(entryContent)) {
-    entryContentString = entryContent;
+// needs to stay in sync with Entry struct in core_types
+// https://github.com/holochain/holochain-rust/blob/develop/core_types/src/entry.rs#L15-L18
+export function commit_entry<T>(entry_type_name: string, entry_value: T): string {
+  let _entry_value: String;
+  if(isString<T>(entry_value)) {
+    _entry_value = entry_value;
   } else {
-    entryContentString = stringify(entryContent);
+    _entry_value = stringify(entry_value);
   }
-  let jsonEncodedParams = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContentString+`"}`;
+  let jsonEncodedParams = `{"entry_type_name":"`+entry_type_name+`","entry_value":"`+_entry_value+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
-export function get_entry(hash: string): string {
-  let jsonEncodedParams: string = `{"address":"`+hash+`"}`;
+export function get_entry(address: string): string {
+  let jsonEncodedParams: string = `{"address":"`+address+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
 }
 

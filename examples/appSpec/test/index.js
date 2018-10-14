@@ -24,13 +24,13 @@ hctest('test commit_entry', (app, t) => {
   } catch (e) {
     t.end()
   }
-  t.deepEqual(obj, { address: 'QmRN6wdp1S2A5EtjW9A3M1vKSBuQQGcgvuhoMUoEz4iiT5' })
+  t.deepEqual(obj, { address: 'QmfAse1X7JzV2H15RFzPrAEHor5fPqa9UPNMTXe4c2obcH' })
 })
 
 hctest('test get_entry', (app, t) => {
   t.plan(1)
   app.call("three", "main", "test_commit_entry", "hello")
-  let result = app.call("three", "main", "test_get_entry", "QmRN6wdp1S2A5EtjW9A3M1vKSBuQQGcgvuhoMUoEz4iiT5")
+  let result = app.call("three", "main", "test_get_entry", "QmfAse1X7JzV2H15RFzPrAEHor5fPqa9UPNMTXe4c2obcH")
   let obj
   try {
     obj = JSON.parse(result)
