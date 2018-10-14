@@ -16,18 +16,20 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [x] commit_entry
 - [x] get_entry
 - [x] init_globals
+- [x] call
 
 ### Functions Ready To Implement (in holochain-rust)
-- [ ] call
-- [ ] get_links
+
 
 ### Functions Not Ready
+- [ ] get_links
+- [ ] link_entries
+- [ ] hash_entry
 - [ ] sign
 - [ ] verify_signature
 - [ ] update_entry
 - [ ] update_agent
 - [ ] remove_entry
-- [ ] link_entries
 - [ ] query
 - [ ] send
 - [ ] start_bundle

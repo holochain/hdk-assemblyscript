@@ -79,3 +79,9 @@ hctest('test init_globals', (app, t) => {
     "app_agent_latest_hash": "FIXME-app_agent_latest_hash"
   })
 })
+
+hctest('test call', (app, t) => {
+  t.plan(1)
+  let result = app.call("three", "main", "test_call", "myinput")
+  t.equal(result, "myoutput")
+})

@@ -3,6 +3,7 @@ import {
   deserialize,
   debug,
   commit_entry,
+  call,
   get_entry,
   init_globals,
   check_encoded_allocation,
@@ -51,7 +52,12 @@ function test_init_globals(): string {
 }
 
 @zome_function
-export function loopback(s: string): string {
+function test_call(input: string): string {
+  return call("four", "main", "testfunction", "hi");
+}
+
+@zome_function
+function loopback(s: string): string {
   return s;
 }
 

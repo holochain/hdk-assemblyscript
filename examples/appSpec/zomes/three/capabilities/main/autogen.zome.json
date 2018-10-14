@@ -45,6 +45,16 @@
       "outputs": []
     },
     {
+      "name": "test_call",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    },
+    {
       "name": "loopback",
       "inputs": [
         {
