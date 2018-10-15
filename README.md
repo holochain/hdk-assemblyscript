@@ -1,15 +1,18 @@
-# Assemblyscript HDK (WIP)
-The Holochain Developer Kit for Assemblyscript (TypeScript)
-
-To enable developers to write zomes in assemblyscript in a familiar way the HDK is responsible for 3 different things:
-
-- Wrapping Holochain API calls from asm so that they can be called with familiar parameters
-- Wrapping exported functions from asm so that the holochain runtime can call them
-- Wrapping callbacks (e.g. validate_commit etc)
-
-The medium of communication between holochain core and wasm zomes is strings which may optionally use json to encode objects. More speficically all wasm calls must accept a single u32 (encoded_allocation) where the high 16 bits are the memory offset and the low 32 bits are the size of the string. Similarly this is what a wasm call must return. 
+# The Holochain Developer Kit for Assemblyscript
 
 ## Status
+
+The `hdk-assemblyscript` is not currently ready for use, and has as "experimental" status.
+
+The hdk-assemblyscript development is currently partially blocked by the lack of JSON parsing in assemblyscript. There is an [open issue](https://github.com/AssemblyScript/assemblyscript/issues/292) for this in the Assemblyscript repository. There are some who've said it is being worked on.
+
+There are several pieces required to complete an HDK, here are their status:
+- Declaring capabilities and their functions: A prototype using `@zome_function` decorator is complete, but being reworked, [issue here](https://github.com/holochain/hdk-assemblyscript/pull/23)
+- Declaring entry types: Not implemented, but a proposal is in [this issue](https://github.com/holochain/hdk-assemblyscript/issues/14)
+- Stringification of class instances to string: Implemented using the `@can_stringify` decorator for classes
+- Entry Validation: Not implemented, but a proposal is in [this issue](https://github.com/holochain/hdk-assemblyscript/issues/14)
+- Link Validation: Not implemented
+- Genesis wrapper: Not implemented, [issue here](https://github.com/holochain/hdk-assemblyscript/issues/21)
 
 ### Working Functions
 - [x] debug
@@ -18,10 +21,7 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [x] init_globals
 - [x] call
 
-### Functions Ready To Implement (in holochain-rust)
-
-
-### Functions Not Ready
+### Functions Not Ready (and not ready in holochain-rust)
 - [ ] get_links
 - [ ] link_entries
 - [ ] hash_entry
@@ -35,7 +35,7 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [ ] start_bundle
 - [ ] close_bundle
 
-## Using the API Functions
+## Using the API Functions (subject to change)
 
 To use a function, just import it...
 ```typescript
@@ -64,13 +64,18 @@ It is important to note that assemblyscript is NOT typescript. There are several
 
 This may make writing zome in ASM difficult for developers used to javascript/typescript.
 
-## Serializing and de-serializing strings from encoded_allocations
-Rust passes and expects UTF-8 null terminated strings. Assemblyscript deals in UTF-16LE encoded non-null terminated strings with a 32 bit header specifyin g the length. It is important to deal with the conversion between these two types in the serialize and deserialize functions.
+## Background
 
-## Parsing json strings to assemblyscript variables
-There is a need for a Serde style library for parsing a JSON string into the fields of a known type. For this purpose we have created [asm-json-parser](https://github.com/willemolding/asm-json-parser). This is an event driven JSON parser for assemblyscript.
+To enable developers to write zomes in assemblyscript in a familiar way the HDK is responsible for 3 different things:
 
-Users may specify a custom handler object that will make callbacks upon reaching certain JSON events e.g. objectStart, arrayStart, key, string, int, float etc. It is straightfoward to then write a custom parser to populate the fields of a given class.
+- Wrapping Holochain API calls from assemblyscript so that they can be called with familiar parameters
+- Wrapping exported functions from assemblyscript so that the holochain runtime can call them
+- Wrapping callbacks (e.g. validate_commit etc)
+
+The medium of communication between holochain core and wasm zomes is strings which use json to encode objects. More speficically all wasm calls must accept a single u32 (encoded_allocation) where the high 16 bits are the memory offset and the low 32 bits are the size of the string. Similarly this is what a wasm call must return.
+
+### Serializing and de-serializing strings from encoded_allocations
+Rust passes and expects UTF-8 null terminated strings. Assemblyscript deals in UTF-16LE encoded non-null terminated strings with a 32 bit header specifying the length. It is important to deal with the conversion between these two types in the serialize and deserialize functions.
 
 ## Macros for improving the developer experience
 Assemblyscript supports transforming the typescript source as part of the build pipeline. It is also able to recognise decorators e.g `@zome_function`. This mean that the boilerplate of deserializing/serializing arguments can be abstracted from the developer. 
@@ -79,7 +84,7 @@ The proposed tranform is as follows:
 Developer writes:
 ```typescript
 @zome_function
-function writePost(title: string, body: string, timestamp: i32): string {
+function writePost(title: string): string {
     ... commit entries etc
 }
 ```
@@ -98,25 +103,6 @@ export function writePost(e: u32): u32 {
     let title: string;
     let body: string;
     let timestamp: i32;
-    
-    // attempt to parse the json string into the variables
-    class ParameterHandler extends Handler {
-      onInt(value: i32, stringValue: string) {
-        if(currentKey == "timestamp") {
-            timestamp = value;
-        }
-      }
-      onString(value: string) {
-        if(currentKey == "title") {
-            title = value;
-        } else if (currentKey == "body") {
-            body = value;
-        }
-      }
-    }
-    
-    let handler = new ParameterHandler()
-    parseString<ParameterHandler>(jsonString, handler)
     
     // call the original function
     let result: string = _writePost(title, body, timestamp);
@@ -138,7 +124,7 @@ This may or may not be acceptable going forward
 
 To run the tests of this repo...
 
-First, make sure you have the latest version of [hc](https://github.com/holochain/holochain-cmd) and [hcx](https://github.com/holochain/holosqape) installed.
+First, make sure you have the latest version of [hc](https://github.com/holochain/holochain-cmd) and [hcshell](https://github.com/holochain/holosqape#hcshell) installed.
 
 ```shell
 cd examples/appSpec
