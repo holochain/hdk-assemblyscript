@@ -1,4 +1,4 @@
-# The Holochain Developer Kit for Assemblyscript
+# Holochain Developer Kit for Assemblyscript
 
 ## Status
 
