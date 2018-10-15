@@ -2,9 +2,11 @@
 
 ## Status
 
-The `hdk-assemblyscript` is not currently ready for use, and has as "experimental" status.
+The `hdk-assemblyscript` is not currently ready for use, and has an "experimental" status.
 
 The hdk-assemblyscript development is currently partially blocked by the lack of JSON parsing in assemblyscript. There is an [open issue](https://github.com/AssemblyScript/assemblyscript/issues/292) for this in the Assemblyscript repository. There are some who've said it is being worked on.
+
+Until these issues are resolved, [hdk-rust](https://github.com/holochain/hdk-rust) will be the most functional HDK for app development.
 
 There are several pieces required to complete an HDK, here are their status:
 - Declaring capabilities and their functions: A prototype using `@zome_function` decorator is complete, but being reworked, [issue here](https://github.com/holochain/hdk-assemblyscript/pull/23)
@@ -35,7 +37,7 @@ There are several pieces required to complete an HDK, here are their status:
 - [ ] start_bundle
 - [ ] close_bundle
 
-## Using the API Functions (subject to change)
+## Using the API Functions (decorators subject to change)
 
 To use a function, just import it...
 ```typescript
@@ -53,6 +55,26 @@ function createPost(...) {
   ...
 }
 ```
+
+# Running Tests
+
+### Dependencies
+- [Nodejs](https://nodejs.org)
+  - Nodejs must be installed, as the assemblyscript build system relies on node/npm
+- [hc](https://github.com/holochain/holochain-cmd)
+  - `hc` is the command line tools for Holochain app development
+- [hcshell](https://github.com/holochain/holosqape#hcshell)
+  - `hcshell` is the underlying container that runs Holochain DNA tests
+
+To run the tests of this repo, run the following commands within this repository in the command line, having cloned or downloaded it to your computer.
+
+```shell
+npm install
+cd examples/appSpec
+hc test | test/node_modules/faucet/bin/cmd.js
+```
+
+The use of `| test/node_modules/faucet/bin/cmd.js` ensures a nicer visual output. To read more about options for test running, visit the [holochain-cmd](https://github.com/holochain/holochain-cmd#writing-and-running-tests) repository.
 
 ## Limitations of assemblyscript
 It is important to note that assemblyscript is NOT typescript. There are several important features that are missing notably:
@@ -119,14 +141,3 @@ The above still has some limitations such as:
 - only primitive types and strings permitted as function parameters
 
 This may or may not be acceptable going forward
-
-# Running Tests
-
-To run the tests of this repo...
-
-First, make sure you have the latest version of [hc](https://github.com/holochain/holochain-cmd) and [hcshell](https://github.com/holochain/holosqape#hcshell) installed.
-
-```shell
-cd examples/appSpec
-hc test | test/node_modules/faucet/bin/cmd.js
-```
