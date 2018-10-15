@@ -40,10 +40,17 @@ mod tests {
     }
 
 
+    // #[test]
+    // fn test_debug() {
+    //     let mut hc = setup_hc();
+    //     let _debug_result = hc.call("three", "main", "test_debug", r#"holochain debug!"#);
+    //     assert!(true);
+    // }
+
     #[test]
-    fn test_debug() {
+    fn test_debug_object() {
         let mut hc = setup_hc();
-        let _debug_result = hc.call("three", "main", "test_debug", r#"holochain debug!"#);
+        let _debug_result = hc.call("three", "main", "test_debug_object", r#""#);
         assert!(true);
     }
 
@@ -73,7 +80,7 @@ mod tests {
                 hash: e.to_string()
             }
         };
-        assert_eq!(commit_result.hash, "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ".to_string());
+        assert_eq!(commit_result.hash, "QmZsRsCTUGBy7ox5hiitArDfCjxUJxvoLLZBwZrmCy5wv4".to_string());
     }
 
 
@@ -81,7 +88,7 @@ mod tests {
     fn test_get() {
         let mut hc = setup_hc();
         let _commit_result = hc.call("three", "main", "test_commit_entry", r#"test value"#);
-        let get_result = hc.call("three", "main", "test_get_entry", "QmTB1F5LNJvQHVriLH5b13oeEvDBJNA7YUjogpiX8s1yCJ");
+        let get_result = hc.call("three", "main", "test_get_entry", "QmZsRsCTUGBy7ox5hiitArDfCjxUJxvoLLZBwZrmCy5wv4");
         assert!(get_result.is_ok());
     }
 

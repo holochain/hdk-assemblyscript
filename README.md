@@ -16,17 +16,20 @@ The medium of communication between holochain core and wasm zomes is strings whi
 - [x] commit_entry
 - [x] get_entry
 - [x] init_globals
+- [x] call
 
 ### Functions Ready To Implement (in holochain-rust)
-- [ ] call
+
 
 ### Functions Not Ready
+- [ ] get_links
+- [ ] link_entries
+- [ ] hash_entry
 - [ ] sign
 - [ ] verify_signature
 - [ ] update_entry
 - [ ] update_agent
 - [ ] remove_entry
-- [ ] link_entries
 - [ ] query
 - [ ] send
 - [ ] start_bundle
@@ -131,5 +134,13 @@ The above still has some limitations such as:
 
 This may or may not be acceptable going forward
 
-## Generating manifest.json
-This will be done as part of the transform process in the build pipeline
+# Running Tests
+
+To run the tests of this repo...
+
+First, make sure you have the latest version of [hc](https://github.com/holochain/holochain-cmd) and [hcx](https://github.com/holochain/holosqape) installed.
+
+```shell
+cd examples/appSpec
+hc test | test/node_modules/faucet/bin/cmd.js
+```

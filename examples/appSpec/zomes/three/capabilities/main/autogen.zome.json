@@ -1,0 +1,68 @@
+{
+  "description": "",
+  "capability": {
+    "membrane": "agent"
+  },
+  "functions": [
+    {
+      "name": "test_debug",
+      "inputs": [
+        {
+          "name": "val",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "test_debug_object",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "test_commit_entry",
+      "inputs": [
+        {
+          "name": "jsonStringParams",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "test_get_entry",
+      "inputs": [
+        {
+          "name": "hash",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "test_init_globals",
+      "inputs": [],
+      "outputs": []
+    },
+    {
+      "name": "test_call",
+      "inputs": [
+        {
+          "name": "input",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    },
+    {
+      "name": "loopback",
+      "inputs": [
+        {
+          "name": "s",
+          "type": "string"
+        }
+      ],
+      "outputs": []
+    }
+  ]
+}

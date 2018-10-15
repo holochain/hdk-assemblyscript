@@ -8,7 +8,7 @@
     "dev-jsmn": "asc jsmn-test -t tmp/jsmn.wat -b tmp/jsmn.wasm --transform transforms/decorator-deserializable --validate --sourceMap --measure"
   },
   "dependencies": {
-    "assemblyscript": "lrettig/assemblyscript#ewasm"
+    "assemblyscript": "github:holochain/assemblyscript"
   },
   "devDependencies": {
     "ts-node": "^7.0.0",

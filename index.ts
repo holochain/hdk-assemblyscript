@@ -1,6 +1,6 @@
 import "allocator/tlsf";
 
-import {Globals} from "./types"
+import { Globals } from "./types"
 
 import {
   u32_high_bits,
@@ -9,7 +9,7 @@ import {
   deserialize,
   check_encoded_allocation,
   errorCodeToString,
-  free
+  free,
 } from './utils';
 
 export {
@@ -25,6 +25,10 @@ export {
 
 import {JsmnType, JsmnToken} from './jsmn-interop'
 export {JsmnType, JsmnToken} from './jsmn-interop'
+
+import { stringify } from './json';
+export { stringify } from './json';
+
 
 declare namespace env {
   function hc_debug(encoded_allocation_of_input: u32): u32;
@@ -69,25 +73,40 @@ function handleSerialization(input: string, api_call: (e: u32) => u32): string {
   let result: u32 = api_call(encoded_allocation);
   let resultCode = check_encoded_allocation(result);
 
-  if(resultCode === ErrorCode.Success) {
+  if(resultCode == ErrorCode.Success) {
     return deserialize(result)
   } else {
     return errorCodeToString(resultCode)
   }
 }
 
-export function debug(message: string): void {
-  handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
+export function debug<T>(message: T): void {
+  if(isString<T>(message)) {
+    handleSerialization(message, (e: u32): u32 => env.hc_debug(e));
+  } else {
+    handleSerialization(stringify(message), (e: u32): u32 => env.hc_debug(e));
+  }
 }
 
-export function commit_entry(entryType: string, entryContent: string): string {
-  let jsonEncodedParams: string = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContent+`"}`;
+export function commit_entry<T>(entryType: string, entryContent: T): string {
+  let entryContentString: String;
+  if(isString<T>(entryContent)) {
+    entryContentString = entryContent;
+  } else {
+    entryContentString = stringify(entryContent);
+  }
+  let jsonEncodedParams = `{"entry_type_name":"`+entryType+`","entry_content":"`+entryContentString+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_commit_entry(e));
 }
 
 export function get_entry(hash: string): string {
-  let jsonEncodedParams: string = `{"key":"`+hash+`"}`;
+  let jsonEncodedParams: string = `{"address":"`+hash+`"}`;
   return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_get_entry(e));
+}
+
+export function call(zome_name: string, cap_name: string, fn_name: string, fn_args: string): string {
+  let jsonEncodedParams: string = `{"zome_name":"`+zome_name+`", "cap_name":"`+cap_name+`", "fn_name":"`+fn_name+`", "fn_args":"`+fn_args+`"}`;
+  return handleSerialization(jsonEncodedParams, (e: u32): u32 => env.hc_call(e));
 }
 
 export function init_globals(): string {
