@@ -6,7 +6,7 @@ The `hdk-assemblyscript` is not currently ready for use, and has an "experimenta
 
 The hdk-assemblyscript development is currently partially blocked by the lack of JSON parsing in assemblyscript. There is an [open issue](https://github.com/AssemblyScript/assemblyscript/issues/292) for this in the Assemblyscript repository. There are some who've said it is being worked on.
 
-Until these issues are resolved, [hdk-rust](https://github.com/holochain/hdk-rust) will be the most functional HDK for app development.
+Until these issues are resolved, [hdk-rust](https://github.com/holochain/holochain-rust/tree/develop/hdk-rust) will be the most functional HDK for app development.
 
 There are several pieces required to complete an HDK, here are their status:
 - Declaring capabilities and their functions: A prototype using `@zome_function` decorator is complete, but being reworked, [issue here](https://github.com/holochain/hdk-assemblyscript/pull/23)
